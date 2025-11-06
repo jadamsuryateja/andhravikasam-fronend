@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { MapPin, User, Shield, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 
@@ -167,6 +168,93 @@ function Projects() {
     );
   };
 
+  // First, create a static header component
+  const ProjectsHeader = () => (
+    <>
+      <div className="text-center mb-12 space-y-4">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+          Community Projects
+        </h2>
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+          Track the progress of various development initiatives
+        </p>
+      </div>
+    </>
+  );
+
+  // Create a static filter component
+  const FilterControls = ({ setFilter, filter, setCurrentPage }) => (
+    <div className="flex justify-center mb-8 overflow-x-auto py-2">
+      <div className="inline-flex rounded-md shadow-sm">
+        {['all', 'Pending', 'In Progress', 'Solved'].map((status) => (
+          <button
+            key={status}
+            onClick={() => {
+              setFilter(status);
+              setCurrentPage(1);
+            }}
+            className={`whitespace-nowrap px-3 sm:px-4 py-2 text-sm font-medium ${
+              filter === status
+                ? 'bg-primary text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+            } border ${
+              status === 'all' ? 'rounded-l-md' : ''
+            } ${
+              status === 'Solved' ? 'rounded-r-md' : ''
+            } border-gray-300`}
+          >
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Create a static pagination component
+  const PaginationControls = ({ currentPage, totalPages, paginate, indexOfFirstProject, indexOfLastProject, totalProjects }) => (
+    <div className="mt-8 flex flex-col items-center justify-center space-y-4 pb-8">
+      <div className="bg-white px-4 py-3 rounded-lg shadow-sm border border-gray-200">
+        <p className="text-sm text-gray-700">
+          Showing projects{' '}
+          <span className="font-medium">{indexOfFirstProject + 1}</span>
+          {' - '}
+          <span className="font-medium">
+            {Math.min(indexOfLastProject, totalProjects)}
+          </span>
+          {' of '}
+          <span className="font-medium">{totalProjects}</span>
+        </p>
+      </div>
+
+      <div className="flex justify-center gap-4 w-full max-w-md">
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-6 py-3 bg-white text-gray-800 font-semibold border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        >
+          <span>←</span> Previous
+        </button>
+
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-6 py-3 bg-white text-gray-800 font-semibold border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        >
+          Next <span>→</span>
+        </button>
+      </div>
+
+      <div className="text-sm font-medium text-gray-700">
+        Page {currentPage} of {totalPages}
+      </div>
+    </div>
+  );
+
+  // Memo-ize the components to prevent re-renders
+  const MemoizedProjectsHeader = React.memo(ProjectsHeader);
+  const MemoizedFilterControls = React.memo(FilterControls);
+  const MemoizedPaginationControls = React.memo(PaginationControls);
+
   if (loading) {
     return (
       <div className="pt-24 pb-12 bg-gray-50 min-h-screen">
@@ -213,43 +301,14 @@ function Projects() {
   return (
     <div className="pt-24 pb-12 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Static Header */}
-        <div className="text-center mb-12 space-y-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-            Community Projects
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-            Track the progress of various development initiatives
-          </p>
-        </div>
+        <MemoizedProjectsHeader />
+        
+        <MemoizedFilterControls 
+          setFilter={setFilter} 
+          filter={filter} 
+          setCurrentPage={setCurrentPage}
+        />
 
-        {/* Static Filter Controls */}
-        <div className="flex justify-center mb-8 overflow-x-auto py-2">
-          <div className="inline-flex rounded-md shadow-sm">
-            {['all', 'Pending', 'In Progress', 'Solved'].map((status) => (
-              <button
-                key={status}
-                onClick={() => {
-                  setFilter(status);
-                  setCurrentPage(1);
-                }}
-                className={`whitespace-nowrap px-3 sm:px-4 py-2 text-sm font-medium ${
-                  filter === status
-                    ? 'bg-primary text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
-                } border ${
-                  status === 'all' ? 'rounded-l-md' : ''
-                } ${
-                  status === 'Solved' ? 'rounded-r-md' : ''
-                } border-gray-300`}
-              >
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Dynamic Project Cards */}
         <ProjectCards 
           projects={currentProjects}
           loading={loading}
@@ -257,46 +316,14 @@ function Projects() {
           getStatusColor={getStatusColor}
         />
 
-        {/* Static Pagination Controls */}
-        <div className="mt-8 flex flex-col items-center justify-center space-y-4 pb-8">
-          {/* Projects count */}
-          <div className="bg-white px-4 py-3 rounded-lg shadow-sm border border-gray-200">
-            <p className="text-sm text-gray-700">
-              Showing projects{' '}
-              <span className="font-medium">{indexOfFirstProject + 1}</span>
-              {' - '}
-              <span className="font-medium">
-                {Math.min(indexOfLastProject, projects.length)}
-              </span>
-              {' of '}
-              <span className="font-medium">{projects.length}</span>
-            </p>
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-center gap-4 w-full max-w-md">
-            <button
-              onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-6 py-3 bg-white text-gray-800 font-semibold border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              <span>←</span> Previous
-            </button>
-
-            <button
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-6 py-3 bg-white text-gray-800 font-semibold border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              Next <span>→</span>
-            </button>
-          </div>
-
-          {/* Page indicator */}
-          <div className="text-sm font-medium text-gray-700">
-            Page {currentPage} of {totalPages}
-          </div>
-        </div>
+        <MemoizedPaginationControls 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          paginate={paginate}
+          indexOfFirstProject={indexOfFirstProject}
+          indexOfLastProject={indexOfLastProject}
+          totalProjects={projects.length}
+        />
       </div>
     </div>
   );
