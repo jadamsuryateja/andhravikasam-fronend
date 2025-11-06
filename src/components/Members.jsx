@@ -3,6 +3,7 @@ import { Loader2, CheckCircle, XCircle, Users } from 'lucide-react';
 
 const API_URL = 'https://andhravikasam-server.onrender.com/api';
 
+// Update the main container
 function Members({ admin }) {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +56,7 @@ function Members({ admin }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-2">
       {/* Header Card */}
       <div className="bg-white rounded-xl shadow-sm p-4 lg:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

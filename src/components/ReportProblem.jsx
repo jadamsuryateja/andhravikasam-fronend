@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import { 
-  Building2, Droplets, Power, Heart, GraduationCap, 
-  TreePine, Bus, AlertCircle, MapPin, Camera, FileText, 
-  ArrowRight, Check 
+  Building2, Droplets, Zap, Heart, GraduationCap, 
+  TreePine, Bus, MoreHorizontal, MapPin, Camera, FileText, 
+  ArrowRight, Check, AlertCircle 
 } from 'lucide-react';
 
 const API_URL = 'https://andhravikasam-server.onrender.com/api';
@@ -43,58 +43,50 @@ function ReportProblem() {
     {
       id: 'infrastructure',
       title: 'Infrastructure',
-      description: 'Roads, bridges, buildings, public facilities',
-      timeline: 'Est. Timeline: 2-4 weeks',
-      icon: Building2
+      icon: Building2,
+      description: 'Roads, Buildings, Bridges, etc.'
     },
     {
       id: 'water',
-      title: 'Water & Sanitation',
-      description: 'Water supply, drainage, sewage, toilets',
-      timeline: 'Est. Timeline: 1-3 weeks',
-      icon: Droplets
+      title: 'Water',
+      icon: Droplets,
+      description: 'Water Supply, Drainage, Sanitation'
     },
     {
       id: 'electricity',
       title: 'Electricity',
-      description: 'Power supply, street lights, electrical issues',
-      timeline: 'Est. Timeline: 1-2 weeks',
-      icon: Power
+      icon: Zap,
+      description: 'Power Supply, Street Lights'
     },
     {
       id: 'healthcare',
       title: 'Healthcare',
-      description: 'Medical facilities, equipment, staff shortage',
-      timeline: 'Est. Timeline: 2-6 weeks',
-      icon: Heart
+      icon: Heart,
+      description: 'Hospitals, Medical Services'
     },
     {
       id: 'education',
       title: 'Education',
-      description: 'Schools, teachers, educational resources',
-      timeline: 'Est. Timeline: 3-8 weeks',
-      icon: GraduationCap
+      icon: GraduationCap,
+      description: 'Schools, Colleges, Education Facilities'
     },
     {
       id: 'environment',
       title: 'Environment',
-      description: 'Pollution, waste management, cleanliness',
-      timeline: 'Est. Timeline: 1-4 weeks',
-      icon: TreePine
+      icon: TreePine,
+      description: 'Pollution, Waste Management'
     },
     {
       id: 'transportation',
       title: 'Transportation',
-      description: 'Public transport, connectivity issues',
-      timeline: 'Est. Timeline: 2-6 weeks',
-      icon: Bus
+      icon: Bus,
+      description: 'Public Transport, Traffic'
     },
     {
       id: 'other',
-      title: 'Other Issues',
-      description: 'Any other community problem',
-      timeline: 'Est. Timeline: 1-4 weeks',
-      icon: AlertCircle
+      title: 'Other',
+      icon: MoreHorizontal,
+      description: 'Other civic issues'
     }
   ];
 
@@ -170,48 +162,121 @@ function ReportProblem() {
     setImages(prev => [...prev, ...files]);
   };
 
+  const validateForm = () => {
+    if (!selectedProblem) {
+      alert('Please select a problem category');
+      return false;
+    }
+    
+    if (!formData.location.village || !formData.location.district) {
+      alert('Please provide location details');
+      return false;
+    }
+    
+    if (!formData.details.title || !formData.details.description) {
+      alert('Please provide problem details');
+      return false;
+    }
+    
+    if (!formData.details.name || !formData.details.contact) {
+      alert('Please provide contact information');
+      return false;
+    }
+    
+    return true;
+  };
+
   const handleSubmit = async () => {
     try {
+      if (!selectedProblem?.id) {
+        alert('Please select a problem category');
+        return;
+      }
+
       setIsSubmitting(true);
       
-      // Upload images to Cloudinary first
-      const imageUrls = await Promise.all(
-        images.map(async (image) => {
-          const formData = new FormData();
-          formData.append('file', image);
-          formData.append('upload_preset', 'your_upload_preset');
-          
-          const response = await fetch('your_cloudinary_url', {
-            method: 'POST',
-            body: formData
-          });
-          
-          const data = await response.json();
-          return data.secure_url;
-        })
-      );
+      // Create FormData object
+      const formDataToSend = new FormData();
+      
+      // Make sure category matches one of the enum values
+      const categoryMapping = {
+        infrastructure: 'infrastructure',
+        water: 'water',
+        electricity: 'electricity',
+        healthcare: 'healthcare',
+        education: 'education',
+        environment: 'environment',
+        transportation: 'transportation',
+        other: 'other'
+      };
 
-      // Submit problem report with image URLs
-      const response = await fetch(`${API_URL}/problems`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...formData,
-          problemType: selectedProblem,
-          images: imageUrls
-        })
+      const category = categoryMapping[selectedProblem.id.toLowerCase()];
+      if (!category) {
+        throw new Error('Invalid problem category');
+      }
+
+      // Add category
+      formDataToSend.append('category', category);
+      
+      // Add location data
+      formDataToSend.append('location', JSON.stringify({
+        gpsLocation: formData.location.gpsLocation || '',
+        village: formData.location.village,
+        district: formData.location.district,
+        state: formData.location.state,
+        pinCode: formData.location.pinCode,
+        landmark: formData.location.landmark || ''
+      }));
+      
+      // Add problem details
+      formDataToSend.append('details', JSON.stringify({
+        title: formData.details.title,
+        description: formData.details.description,
+        peopleAffected: formData.details.peopleAffected,
+        urgencyLevel: formData.details.urgencyLevel || 'Medium'
+      }));
+      
+      // Add contact information
+      formDataToSend.append('contact', JSON.stringify({
+        name: formData.details.name,
+        phone: formData.details.contact,
+        email: formData.details.email || ''
+      }));
+
+      // Append images if any
+      if (images.length > 0) {
+        images.forEach((image) => {
+          formDataToSend.append('images', image);
+        });
+      }
+
+      console.log('Submitting data:', {
+        category,
+        location: formData.location,
+        details: formData.details,
+        contact: {
+          name: formData.details.name,
+          phone: formData.details.contact,
+          email: formData.details.email
+        }
       });
 
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        throw new Error('Failed to submit problem');
+      const response = await fetch(`${API_URL}/problems`, {
+        method: 'POST',
+        body: formDataToSend
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit problem report');
       }
+
+      const data = await response.json();
+      setSubmitted(true);
+      
     } catch (error) {
-      console.error('Error submitting problem:', error);
-      alert('Failed to submit problem. Please try again.');
+      console.error('Submission error:', error);
+      alert(error.message || 'Failed to submit problem report. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -224,49 +289,43 @@ function ReportProblem() {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-gray-900">Select Problem Category</h2>
             {/* Update grid to show 4 cards per row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {problemCategories.map(category => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedProblem(category.id)}
-                  className={`p-4 rounded-xl text-center transition-all hover:shadow-lg w-full
-                           ${selectedProblem === category.id
-                             ? 'bg-primary text-white ring-2 ring-primary ring-offset-2'
-                             : 'bg-white text-gray-700 hover:bg-orange-50 border border-gray-200'
-                           }`}
-                >
-                  <div className="flex flex-col items-center">
-                    {/* Reduce icon container size */}
-                    <div className={`p-3 rounded-lg mb-3 ${
-                      selectedProblem === category.id
-                        ? 'bg-white/20'
-                        : 'bg-orange-100'
-                    }`}>
-                      <category.icon className={`h-8 w-8 ${
-                        selectedProblem === category.id
-                          ? 'text-white'
-                          : 'text-primary'
-                      }`} />
-                    </div>
-                    {/* Reduce text sizes */}
-                    <h3 className="font-semibold text-lg mb-2">{category.title}</h3>
-                    <p className={`text-sm mb-2 ${
-                        selectedProblem === category.id
-                          ? 'text-white/90'
-                          : 'text-gray-600'
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+              {problemCategories.map(category => {
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedProblem(category)}
+                    className={`p-3 sm:p-4 rounded-xl text-center transition-all hover:shadow-lg w-full
+                              ${selectedProblem?.id === category.id
+                                ? 'bg-primary text-white ring-2 ring-primary ring-offset-2'
+                                : 'bg-white text-gray-700 hover:bg-orange-50 border border-gray-200'
+                              }`}
+                  >
+                    <div className="flex flex-col items-center">
+                      <div className={`p-2 sm:p-3 rounded-lg mb-2 sm:mb-3 ${
+                        selectedProblem?.id === category.id
+                          ? 'bg-white/20'
+                          : 'bg-orange-100'
                       }`}>
-                        {category.description}
-                      </p>
-                      <div className={`text-xs font-medium ${
-                        selectedProblem === category.id
-                          ? 'text-white/80'
-                          : 'text-primary'
-                      }`}>
-                        {category.timeline}
+                        <Icon className={`h-6 w-6 sm:h-8 sm:w-8 ${
+                          selectedProblem?.id === category.id
+                            ? 'text-white'
+                            : 'text-primary'
+                        }`} />
                       </div>
-                  </div>
-                </button>
-              ))}
+                      <h3 className="font-semibold text-base sm:text-lg mb-1 sm:mb-2">{category.title}</h3>
+                      <p className={`text-xs sm:text-sm ${
+                          selectedProblem?.id === category.id
+                            ? 'text-white/90'
+                            : 'text-gray-600'
+                        }`}>
+                          {category.description}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         );
@@ -638,28 +697,19 @@ function ReportProblem() {
         {/* Card with softer background */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl">
           {/* Progress Steps */}
-          <div className="p-6 sm:p-8 border-b border-orange-100">
-            <div className="max-w-2xl mx-auto">
-              <div className="flex items-center justify-between relative px-4 sm:px-8">
-                {/* Background Line */}
-                <div className="absolute left-0 right-0 top-[22px] h-[2px] bg-orange-100" />
-                
-                {/* Progress Line */}
-                <div 
-                  className="absolute left-0 top-[22px] h-[2px] bg-primary transition-all duration-500"
-                  style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
-                />
-                
-                {/* Steps */}
+          <div className="p-4 sm:p-6 lg:p-8 border-b border-orange-100">
+            <div className="max-w-3xl mx-auto">
+              {/* Steps container - vertical on mobile, horizontal on larger screens */}
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                 {steps.map((step, index) => (
                   <div
                     key={step.number}
-                    className="relative flex flex-col items-center"
+                    className="flex items-center sm:flex-col sm:items-center gap-4 sm:gap-2"
                   >
-                    {/* Circle with orange tint for inactive state */}
+                    {/* Circle with number */}
                     <div
-                      className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center 
-                               text-base font-bold mb-3 transition-all duration-300
+                      className={`w-10 h-10 rounded-full flex items-center justify-center 
+                               text-sm font-bold transition-all duration-300 flex-shrink-0
                                ${currentStep >= step.number
                                  ? 'bg-primary text-white shadow-md'
                                  : 'bg-orange-50 text-gray-400 border-2 border-orange-200'
@@ -668,16 +718,16 @@ function ReportProblem() {
                       {step.number}
                     </div>
 
-                    {/* Labels with orange accent */}
-                    <div className="absolute top-16 text-center w-20 sm:w-28">
+                    {/* Title and subtitle */}
+                    <div className="sm:text-center">
                       <div 
-                        className={`text-sm sm:text-base font-medium mb-0.5 transition-colors duration-300
+                        className={`text-sm font-medium transition-colors duration-300
                                  ${currentStep >= step.number ? 'text-gray-900' : 'text-gray-500'}`}
                       >
                         {step.title}
                       </div>
                       <div 
-                        className={`text-[10px] sm:text-xs transition-colors duration-300
+                        className={`text-xs transition-colors duration-300
                                  ${currentStep >= step.number ? 'text-primary' : 'text-orange-300'}`}
                       >
                         {step.subtitle}
@@ -696,13 +746,13 @@ function ReportProblem() {
           </div>
 
           {/* Navigation with orange accents */}
-          <div className="px-6 sm:px-8 py-4 sm:py-6 border-t border-orange-100 bg-orange-50/30">
-            <div className="flex justify-between items-center">
+          <div className="px-4 sm:px-6 lg:px-8 py-4 border-t border-orange-100 bg-orange-50/30">
+            <div className="flex justify-between items-center gap-4">
               {currentStep > 1 && (
                 <button
                   onClick={() => setCurrentStep(prev => prev - 1)}
-                  className="px-4 sm:px-6 py-2 text-gray-600 font-semibold hover:text-primary 
-                           transition-colors"
+                  className="px-3 sm:px-4 py-2 text-gray-600 font-semibold hover:text-primary 
+                           transition-colors text-sm sm:text-base"
                 >
                   Back
                 </button>
@@ -712,26 +762,26 @@ function ReportProblem() {
                   <button
                     onClick={() => setCurrentStep(prev => prev + 1)}
                     disabled={currentStep === 1 && !selectedProblem}
-                    className={`px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-white font-semibold 
-                             rounded-lg transition-all flex items-center gap-2
+                    className={`px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white font-semibold 
+                             rounded-lg transition-all flex items-center gap-2 text-sm sm:text-base
                              ${currentStep === 1 && !selectedProblem
                                ? 'opacity-50 cursor-not-allowed'
                                : 'hover:bg-orange-600'
                              }`}
                   >
                     Next
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
                   </button>
                 ) : (
                   <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-white font-semibold 
+                    className="px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white font-semibold 
                              rounded-lg hover:bg-orange-600 transition-all flex items-center 
-                             gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                             gap-2 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit Report'}
-                    {!isSubmitting && <Check className="h-5 w-5" />}
+                    {!isSubmitting && <Check className="h-4 w-4 sm:h-5 sm:w-5" />}
                   </button>
                 )}
               </div>

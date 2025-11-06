@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { MapPin, User, Shield, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 
-const API_URL = 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
 
 function Projects() {
   const [projects, setProjects] = useState([]);

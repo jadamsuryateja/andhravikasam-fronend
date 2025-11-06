@@ -7,8 +7,10 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
   define: {
-    // Add this to make environment variables available
     'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL)
   },
-  base: '/'
+  server: {
+    port: 5173,
+    host: true
+  }
 });
