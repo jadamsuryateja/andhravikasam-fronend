@@ -1,4 +1,4 @@
-import { ArrowRight, Heart, Eye, Gift, ArrowDown } from 'lucide-react';
+import { ArrowRight, Heart, Eye, Gift, ArrowDown, Users, AlertCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -329,103 +329,52 @@ function Hero({ setCurrentView }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {/* Report Problem Card */}
-            <div className="relative group rounded-2xl border-2 border-white/20 overflow-hidden h-[500px]">
-              <div className="absolute inset-0">
-                <img 
-                  src="https://bsmedia.business-standard.com/_media/bs/img/article/2024-09/04/full/1725445000-3884.jpg"
-                  alt="Report Problem"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
-              </div>
-              <div className="relative p-10 h-full flex flex-col justify-between z-10">
-                <div>
-                  <h3 className="text-3xl font-bold text-white mb-4 
-                     drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                    Report a Problem
-                  </h3>
-                  <p className="text-lg text-white mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
-                   leading-relaxed">
-                    See an issue in your village or community? Report it now and watch our volunteers spring into action.
-                  </p>
+            {/* Icon Card - Report Problem */}
+            <div className="flex flex-col items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-8 h-full text-center">
+              <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 text-primary mb-6">
+                <div className="animate-pulse">
+                  <AlertCircle className="h-10 w-10" />
                 </div>
-                <button 
-                  onClick={() => handleNavigation('report')}
-                  className="w-full px-6 py-4 bg-white text-primary font-semibold 
-                           rounded-lg hover:bg-orange-50 transition-all duration-300
-                           shadow-lg hover:shadow-xl border-2 border-transparent
-                           hover:border-white text-lg"
-                >
-                  Report Now
-                </button>
               </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold text-white mb-3">Report a Problem</h3>
+                <p className="text-sm text-gray-200 mb-6">See an issue in your village or community? Report it now and watch our volunteers spring into action.</p>
+              </div>
+              <button onClick={() => handleNavigation('report')} className="mt-4 inline-flex items-center px-5 py-2.5 bg-white text-primary font-semibold rounded-full hover:bg-gray-100 transition shadow-sm">
+                Report Now
+              </button>
             </div>
 
-            {/* Join Movement Card */}
-            <div className="relative group rounded-2xl border-2 border-white/20 overflow-hidden h-[500px]">
-              <div className="absolute inset-0">
-                <img 
-                  src="https://api.fairwear.org/wp-content/uploads/2019/08/perry-grone-lbLgFFlADrY-unsplash-1200x675.jpg"
-                  alt="Join Movement"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
-              </div>
-              <div className="relative p-10 h-full flex flex-col justify-between z-10">
-                <div>
-                  <h3 className="text-3xl font-bold text-white mb-4 
-                     drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                    Join the Movement
-                  </h3>
-                  <p className="text-lg text-white mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
-                   leading-relaxed">
-                    Become part of India's largest youth-led governance initiative. Your skills can transform communities.
-                  </p>
+            {/* Icon Card - Join Movement */}
+            <div className="flex flex-col items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-8 h-full text-center">
+              <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 text-primary mb-6">
+                <div className="animate-bounce">
+                  <Users className="h-10 w-10" />
                 </div>
-                <button 
-                  onClick={() => handleNavigation('join')}
-                  className="w-full px-6 py-4 bg-white text-primary font-semibold 
-                           rounded-lg hover:bg-orange-50 transition-all duration-300
-                           shadow-lg hover:shadow-xl border-2 border-transparent
-                           hover:border-white text-lg"
-                >
-                  Join as Volunteer
-                </button>
               </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold text-white mb-3">Join the Movement</h3>
+                <p className="text-sm text-gray-200 mb-6">Become part of India's largest youth-led governance initiative. Your skills can transform communities.</p>
+              </div>
+              <button onClick={() => handleNavigation('join')} className="mt-4 inline-flex items-center px-5 py-2.5 bg-white text-primary font-semibold rounded-full hover:bg-gray-100 transition shadow-sm">
+                Join as Volunteer
+              </button>
             </div>
 
-            {/* Support Cause Card */}
-            <div className="relative group rounded-2xl border-2 border-white/20 overflow-hidden h-[500px]">
-              <div className="absolute inset-0">
-                <img 
-                  src="https://appfrontier.com/wp-content/uploads/2022/09/CB93-500x383.jpg"
-                  alt="Support Cause"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
-              </div>
-              <div className="relative p-10 h-full flex flex-col justify-between z-10">
-                <div>
-                  <h3 className="text-3xl font-bold text-white mb-4 
-                     drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                    Support Our Cause
-                  </h3>
-                  <p className="text-lg text-white mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
-                   leading-relaxed">
-                    Every donation directly funds village projects. See exactly where your money goes with our transparency engine.
-                  </p>
+            {/* Icon Card - Support Cause */}
+            <div className="flex flex-col items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-8 h-full text-center">
+              <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 text-primary mb-6">
+                <div className="animate-pulse">
+                  <Gift className="h-10 w-10" />
                 </div>
-                <button 
-                  onClick={() => handleNavigation('donate')}
-                  className="w-full px-6 py-4 bg-white text-primary font-semibold 
-                           rounded-lg hover:bg-orange-50 transition-all duration-300
-                           shadow-lg hover:shadow-xl border-2 border-transparent
-                           hover:border-white text-lg"
-                >
-                  Donate Now
-                </button>
               </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold text-white mb-3">Support Our Cause</h3>
+                <p className="text-sm text-gray-200 mb-6">Every donation directly funds village projects. See exactly where your money goes with our transparency engine.</p>
+              </div>
+              <button onClick={() => handleNavigation('donate')} className="mt-4 inline-flex items-center px-5 py-2.5 bg-white text-primary font-semibold rounded-full hover:bg-gray-100 transition shadow-sm">
+                Donate Now
+              </button>
             </div>
           </div>
         </div>
