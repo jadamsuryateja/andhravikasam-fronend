@@ -111,7 +111,7 @@ function Transparency({ isPreview = false }) {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 pt-36 pb-16">
+    <div className="relative min-h-screen bg-gradient-to-b from-white to-orange-50 pt-36 pb-16 w-full">
       {/* Changed pt-32 to pt-36 for a bit more top padding */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
