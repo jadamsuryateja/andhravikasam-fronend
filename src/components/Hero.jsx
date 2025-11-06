@@ -135,22 +135,69 @@ function Hero({ setCurrentView }) {
         {/* Hero Content */}
         <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-center items-center h-full text-center">
-            <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold 
-                   text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
-                   tracking-tight leading-[1.1]">
-                {slides[currentSlide].title}
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90
-                   font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                {slides[currentSlide].text}
-              </p>
+            {/* Fixed height container for animated content */}
+            <div className="space-y-6 sm:space-y-8 max-w-3xl mx-auto min-h-[400px] flex flex-col">
+              {/* Text animation container */}
+              <div className="flex-grow">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold 
+                     text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
+                     tracking-tight leading-[1.1] mb-2 sm:mb-4 px-4 sm:px-6">
+                  {slides[currentSlide].title}
+                </h1>
+                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90
+                     font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
+                     px-4 sm:px-6 mb-8 sm:mb-12">
+                  {slides[currentSlide].text}
+                </p>
+              </div>
+
+              {/* Fixed position buttons container */}
+              <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
+                <motion.button
+                  variants={buttonVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={0}
+                  onClick={handleJoinClick}
+                  className="px-6 py-3 bg-orange-500 text-white rounded-full font-semibold 
+                           hover:bg-orange-600 transform hover:-translate-y-0.5 transition-all 
+                           duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
+                >
+                  Join as Volunteer
+                </motion.button>
+
+                <motion.button
+                  variants={buttonVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={1}
+                  onClick={handleProjectsClick}
+                  className="px-6 py-3 bg-white text-orange-500 rounded-full font-semibold 
+                           hover:bg-orange-50 transform hover:-translate-y-0.5 transition-all 
+                           duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto border border-orange-500"
+                >
+                  View Projects
+                </motion.button>
+
+                <motion.button
+                  variants={buttonVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={2}
+                  onClick={handleDonateClick}
+                  className="px-6 py-3 bg-green-500 text-white rounded-full font-semibold 
+                           hover:bg-green-600 transform hover:-translate-y-0.5 transition-all 
+                           duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
+                >
+                  Donate ₹1 for Andhra
+                </motion.button>
+              </div>
             </div>
           </div>
 
-          {/* Scroll Indicator - Centered */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 
-                         animate-bounce hidden sm:block">
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 
+                       animate-bounce hidden sm:block">
             <ArrowDown className="h-5 w-5 text-white/80" />
           </div>
         </div>
@@ -674,42 +721,6 @@ function Hero({ setCurrentView }) {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Replace the existing buttons section with this code */}
-      <div className="absolute bottom-32 left-0 right-0 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6 z-20">
-        <motion.button
-          variants={buttonVariants}
-          initial="hidden"
-          animate="visible"
-          custom={0}
-          onClick={handleJoinClick}
-          className="px-6 py-3 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
-        >
-          Join as Volunteer
-        </motion.button>
-
-        <motion.button
-          variants={buttonVariants}
-          initial="hidden"
-          animate="visible"
-          custom={1}
-          onClick={handleProjectsClick}
-          className="px-6 py-3 bg-white text-orange-500 rounded-full font-semibold hover:bg-orange-50 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto border border-orange-500"
-        >
-          View Projects
-        </motion.button>
-
-        <motion.button
-          variants={buttonVariants}
-          initial="hidden"
-          animate="visible"
-          custom={2}
-          onClick={handleDonateClick}
-          className="px-6 py-3 bg-green-500 text-white rounded-full font-semibold hover:bg-green-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
-        >
-          Donate ₹1 for Andhra
-        </motion.button>
       </div>
     </div>
   );

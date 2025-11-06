@@ -1,4 +1,4 @@
-import { Menu, X, AlertCircle, Wallet2 } from 'lucide-react';
+import { Menu, X, AlertCircle, Wallet2, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 
@@ -42,17 +42,17 @@ function Header() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300
                      ${isScrolled || location.pathname !== '/'
-                       ? 'bg-white shadow-md py-3'
-                       : 'bg-transparent py-4'}`}>
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between">
-          {/* Update the logo link */}
+                       ? 'bg-white shadow-md py-2 lg:py-3'
+                       : 'bg-transparent py-3 lg:py-4'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo - Responsive sizing */}
           <div 
             onClick={() => handleNavigation('/')}
-            className="flex items-center space-x-2 cursor-pointer"
+            className="flex items-center space-x-2 cursor-pointer flex-shrink-0"
           >
-            <span className="text-2xl">🌿</span>
-            <h1 className={`text-xl font-bold transition-colors duration-300
+            <span className="text-xl sm:text-2xl">🌿</span>
+            <h1 className={`text-lg sm:text-xl font-bold transition-colors duration-300
                ${isScrolled || location.pathname !== '/'
                  ? 'text-orange-500'
                  : 'text-white'}`}>
@@ -60,118 +60,121 @@ function Header() {
             </h1>
           </div>
 
-          {/* Update navigation links */}
-          <nav className="hidden md:flex items-center space-x-4">
+          {/* Navigation - Hide on mobile, show on medium+ */}
+          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             {navItems.map(item => (
               <button
                 key={item.id}
                 onClick={() => handleNavigation(item.path)}
-                className={`px-3 py-2 text-sm font-medium rounded-lg 
-             transition-all duration-300
-             ${location.pathname === item.path
-               ? 'bg-orange-500 text-white'
-               : isScrolled || location.pathname !== '/'
-                 ? 'text-gray-800 hover:text-orange-500'
-                 : 'text-white hover:text-white/80'}`}
+                className={`px-2 xl:px-3 py-2 text-sm font-medium rounded-lg 
+                transition-all duration-300 whitespace-nowrap
+                ${location.pathname === item.path
+                  ? 'bg-orange-500 text-white'
+                  : isScrolled || location.pathname !== '/'
+                    ? 'text-gray-800 hover:text-orange-500'
+                    : 'text-white hover:text-white/80'}`}
               >
                 {item.label}
               </button>
             ))}
           </nav>
 
-          {/* Update action buttons */}
-          <div className="hidden md:flex items-center space-x-3">
+          {/* Action Buttons - Responsive */}
+          <div className="hidden lg:flex items-center space-x-2 xl:space-x-3 flex-shrink-0">
             <Link
               to="/donate"
-              className={`px-4 py-2 text-sm rounded-lg transition-all duration-300 
-                   flex items-center gap-1.5 font-medium shadow hover:shadow-md
+              className={`px-3 xl:px-4 py-2 text-sm rounded-lg transition-all duration-300 
+                   flex items-center gap-1.5 font-medium shadow hover:shadow-md whitespace-nowrap
                    ${isScrolled || location.pathname !== '/'
                      ? 'bg-green-50 text-green-600 hover:bg-green-100'
                      : 'bg-green-500 text-white hover:bg-green-600'}`}
             >
               <Wallet2 className="h-4 w-4" />
-              Donate
+              <span className="hidden xl:inline">Donate</span>
             </Link>
 
             <Link
               to="/join"
-              className={`px-4 py-2 text-sm font-medium rounded-lg
-             transition-all duration-300 shadow hover:shadow-md
-             ${isScrolled || location.pathname !== '/'
-               ? 'bg-orange-500 text-white hover:bg-orange-600'
-               : 'bg-white text-orange-500 hover:bg-white/90'}`}
+              className={`px-3 xl:px-4 py-2 text-sm font-medium rounded-lg
+                transition-all duration-300 shadow hover:shadow-md whitespace-nowrap
+                ${isScrolled || location.pathname !== '/'
+                  ? 'bg-orange-500 text-white hover:bg-orange-600'
+                  : 'bg-white text-orange-500 hover:bg-white/90'}`}
             >
-              Join the Movement
+              Join Now
             </Link>
           </div>
 
-          {/* Mobile Menu Button - Slightly smaller */}
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-1.5 rounded-lg transition-colors duration-300"
+            className="lg:hidden p-2 rounded-lg transition-colors duration-300"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
+              <X className={`h-6 w-6 ${isScrolled || location.pathname !== '/' ? 'text-gray-900' : 'text-white'}`} />
             ) : (
-              <Menu className="h-5 w-5" />
+              <Menu className={`h-6 w-6 ${isScrolled || location.pathname !== '/' ? 'text-gray-900' : 'text-white'}`} />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu - Updated layout with better text visibility */}
+      {/* Mobile Menu - Full screen overlay */}
       {mobileMenuOpen && (
-        <nav className={`md:hidden border-t transition-all duration-300
-               ${isScrolled || location.pathname !== '/'
-                 ? 'bg-white border-gray-100' 
-                 : 'bg-orange-500/95 border-white/10'}`}>
-          <div className="px-4 py-2 space-y-2">
-            {navItems.map(item => (
+        <div className="lg:hidden fixed inset-0 z-50 bg-white">
+          <div className="flex flex-col h-full overflow-y-auto">
+            <div className="flex items-center justify-between px-4 py-4 border-b">
+              <div className="flex items-center space-x-2">
+                <span className="text-xl">🌿</span>
+                <span className="text-lg font-bold text-orange-500">Andhra Vikasam</span>
+              </div>
               <button
-                key={item.id}
-                onClick={() => handleNavigation(item.path)}
-                className={`block w-full text-left px-4 py-2 rounded-lg text-sm
-                         ${location.pathname === item.path
-                           ? 'bg-white text-primary font-medium'
-                           : isScrolled || location.pathname !== '/'
-                             ? 'text-gray-700 hover:bg-gray-50'
-                             : 'text-white hover:bg-white/10'
-                         }`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 rounded-lg text-gray-600"
               >
-                {item.label}
+                <X className="h-6 w-6" />
               </button>
-            ))}
-            <div className="grid grid-cols-3 gap-2 pt-2 px-4 pb-2">
-              <Link 
-                to="/report"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs 
-                         rounded-lg bg-white text-orange-500 font-medium hover:bg-orange-50"
-              >
-                <AlertCircle className="h-3.5 w-3.5" />
-                Report
-              </Link>
-              <Link 
-                to="/donate"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs 
-                         rounded-lg bg-green-50 text-green-600 font-medium hover:bg-green-100"
-              >
-                <Wallet2 className="h-3.5 w-3.5" />
-                Donate
-              </Link>
-              <Link 
-                to="/join"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center px-3 py-2 text-xs font-medium 
-                         rounded-lg bg-primary text-white hover:bg-primary/90"
-              >
-                Join
-              </Link>
+            </div>
+
+            <nav className="flex-1 px-4 py-6 space-y-2">
+              {navItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavigation(item.path)}
+                  className={`w-full text-left px-4 py-3 rounded-lg text-base font-medium
+                    ${location.pathname === item.path
+                      ? 'bg-orange-50 text-orange-600'
+                      : 'text-gray-900 hover:bg-gray-50'}`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+
+            <div className="p-4 border-t">
+              <div className="grid grid-cols-2 gap-3">
+                <Link
+                  to="/donate"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 px-4 py-3 text-sm
+                    rounded-lg bg-green-50 text-green-600 font-medium hover:bg-green-100"
+                >
+                  <Wallet2 className="h-4 w-4" />
+                  Donate
+                </Link>
+                <Link
+                  to="/join"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center px-4 py-3 text-sm font-medium
+                    rounded-lg bg-orange-500 text-white hover:bg-orange-600"
+                >
+                  Join Now
+                </Link>
+              </div>
             </div>
           </div>
-        </nav>
+        </div>
       )}
     </header>
   );
