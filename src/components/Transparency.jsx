@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { 
   Users, TrendingUp, CheckCircle, DollarSign, Download, Play,
-  BarChart4, ArrowUpRight, FileText, Shield, Award
+  BarChart3, ArrowUpRight, FileText, Shield, Award
 } from 'lucide-react';
 import { Line } from 'react-chartjs-2';
 
@@ -10,41 +10,45 @@ const API_URL = 'https://andhravikasam-server.onrender.com/api';
 function Transparency({ isPreview = false }) {
   // Initialize all stats with zero values
   const [stats, setStats] = useState({
+    transparencyScore: '0%',
+    utilizationRate: '0%',
+    trackingRate: '0%',
+    auditFrequency: 'Not Set',
     totalMembers: 0,
     fundsCollected: 0,
     fundsUsed: 0,
     balance: 0,
-    transparencyScore: 0,
-    utilizationRate: 0,
-    trackingRate: 0,
-    auditFrequency: 'Not Available'
   });
 
-  // Format the metrics to show appropriate zero states
+  // Update the metrics array
   const metrics = [
     {
       title: 'Financial Transparency Score',
-      value: '0%',
+      value: stats.transparencyScore || '0%',
       description: 'Based on independent audit ratings',
-      icon: Shield,
+      icon: Award,
+      color: '#22C55E',
     },
     {
       title: 'Fund Utilization Efficiency',
-      value: '0%',
+      value: stats.utilizationRate || '0%',
       description: 'Direct project impact vs operational costs',
-      icon: BarChart4,
+      icon: TrendingUp,
+      color: '#FF6B3D',
     },
     {
       title: 'Real-time Tracking',
-      value: '0%',
+      value: stats.trackingRate || '0%',
       description: 'All transactions logged and verified',
-      icon: TrendingUp,
+      icon: Shield,
+      color: '#3B82F6',
     },
     {
       title: 'Third-party Audits',
-      value: 'Not Available',
+      value: stats.auditFrequency || 'Not Set',
       description: 'Independent financial verification',
       icon: FileText,
+      color: '#EAB308',
     }
   ];
 
@@ -61,7 +65,12 @@ function Transparency({ isPreview = false }) {
       setIsLoading(true);
       const response = await fetch(`${API_URL}/stats`);
       const data = await response.json();
-      setStats(data);
+      
+      // Update all states with data from backend
+      setStats(data.stats);
+      setFinancialStats(data.financialStats);
+      setHighlightNote(data.highlightNote);
+      
     } catch (error) {
       console.error('Error fetching stats:', error);
     } finally {
@@ -86,22 +95,166 @@ function Transparency({ isPreview = false }) {
   const [transactions, setTransactions] = useState([]);
   const [activeTab, setActiveTab] = useState('monthly');
 
+  // New state variables for financial stats and timeframe
+  const [financialStats, setFinancialStats] = useState({
+    totalIncome: '0',
+    totalExpenses: '0',
+    reserves: '0',
+    efficiencyRatio: '0%'
+  });
+  const [timeframe, setTimeframe] = useState('monthly');
+
+  // Update the highlight note content to be configurable
+  const [highlightNote, setHighlightNote] = useState({
+    title: '100% Transparent Operations',
+    description: 'We maintain 100% transparency. Every rupee you contribute helps rebuild our Andhra.'
+  });
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50/50 pt-24 pb-16">
+    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 pt-36 pb-16">
+      {/* Changed pt-32 to pt-36 for a bit more top padding */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <div className="flex justify-center items-center gap-2 mb-4">
+            <Shield className="h-6 w-6 text-[#FF6B3D]" />
+            <span className="text-[#FF6B3D] font-medium">100% Transparent Operations</span>
+          </div>
+          <h1 className="text-5xl font-bold text-[#2D4356] mb-6">
             Transparency Engine
           </h1>
-          <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-500 max-w-4xl mx-auto leading-relaxed">
             "Transparency isn't just policy, it's our promise." Every rupee tracked, 
             every project documented, every impact measured in real-time.
           </p>
         </div>
 
-        {/* Mission Statement */}
-        <div className="max-w-4xl mx-auto mb-16">
+        {/* Metrics Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {metrics.map((metric, index) => (
+            <div key={index} 
+                 className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-lg transition-all">
+              <div className="flex items-start justify-between mb-6">
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                  <metric.icon 
+                    className="h-6 w-6" 
+                    style={{ color: metric.color }} 
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-gray-600 text-sm font-medium mb-2">
+                  {metric.title}
+                </h3>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-3xl font-bold" 
+                        style={{ color: metric.color }}>
+                    {metric.value}
+                  </span>
+                </div>
+                <p className="text-gray-500 text-sm">
+                  {metric.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Financial Overview Section */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-12">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Financial Overview</h2>
+              <p className="text-gray-500">Comprehensive financial performance and fund utilization</p>
+            </div>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => setTimeframe('monthly')}
+                className={`px-4 py-2 rounded-lg text-sm ${
+                  timeframe === 'monthly' 
+                    ? 'bg-primary text-white' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                Monthly
+              </button>
+              <button 
+                onClick={() => setTimeframe('quarterly')}
+                className={`px-4 py-2 rounded-lg text-sm ${
+                  timeframe === 'quarterly' 
+                    ? 'bg-primary text-white' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                Quarterly
+              </button>
+              <button 
+                onClick={() => setTimeframe('yearly')}
+                className={`px-4 py-2 rounded-lg text-sm ${
+                  timeframe === 'yearly' 
+                    ? 'bg-primary text-white' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                Year to Date
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            {[
+              {
+                title: 'Total Income',
+                value: financialStats.totalIncome,
+                icon: BarChart3,
+                color: 'text-green-500'
+              },
+              {
+                title: 'Total Expenses',
+                value: financialStats.totalExpenses,
+                icon: BarChart3,
+                color: 'text-orange-500'
+              },
+              {
+                title: 'Reserves',
+                value: financialStats.reserves,
+                icon: ArrowUpRight,
+                color: 'text-blue-500'
+              },
+              {
+                title: 'Efficiency Ratio',
+                value: financialStats.efficiencyRatio,
+                icon: ArrowUpRight,
+                color: 'text-green-500'
+              }
+            ].map((item, index) => (
+              <div key={index} className="bg-gray-50 rounded-xl p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <span className="text-gray-600 text-sm">{item.title}</span>
+                  <item.icon className={`h-5 w-5 ${item.color}`} />
+                </div>
+                <div className="flex items-baseline">
+                  <span className="text-2xl font-bold text-gray-900">
+                    {item.value === '0' ? '₹0' : `₹${item.value}`}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Income vs Expenses Trend
+            </h3>
+            <button className="flex items-center gap-2 text-primary text-sm">
+              <Download className="h-4 w-4" />
+              Export Chart
+            </button>
+          </div>
+        </div>
+
+        {/* Mission Statement Cards - Moved after Financial Overview */}
+        <div className="max-w-4xl mx-auto mb-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
               <div className="bg-orange-50 p-3 rounded-lg w-fit mb-4">
@@ -138,115 +291,63 @@ function Transparency({ isPreview = false }) {
           </div>
         </div>
 
-        {/* Metrics Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {metrics.map((metric, index) => (
-            <div key={index} 
-                 className="bg-white rounded-xl shadow-lg p-6 
-                          hover:shadow-xl transition-shadow duration-300">
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <div className="bg-orange-100 p-2 sm:p-3 rounded-lg">
-                  <metric.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                </div>
-                <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-              </div>
-              <h3 className="text-gray-600 text-sm font-semibold mb-1">
-                {metric.title}
-              </h3>
-              <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-                {renderMetricValue(metric.value)}
-              </div>
-              <p className="text-xs sm:text-sm text-gray-500">{metric.description}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Financial Overview */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-12">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-              Financial Overview
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {['monthly', 'quarterly', 'yearly'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base 
-                            transition-all ${
-                    activeTab === tab
-                      ? 'bg-primary text-white'
-                      : 'bg-orange-50 text-gray-600 hover:bg-orange-100'
-                  }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
-          {/* Add financial charts and tables here */}
-        </div>
-
         {/* Commitment to Transparency */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-12">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Commitment to Transparency</h2>
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Our Commitment to Transparency
+            </h2>
             <div className="space-y-6">
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-center">
                 We maintain the highest standards of financial transparency and accountability. 
                 Our books are open for public scrutiny, and we welcome questions about our 
                 operations and fund utilization.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="bg-orange-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Regular Updates</h3>
-                  <ul className="text-sm text-gray-600 space-y-2">
-                    <li>• Monthly financial reports</li>
-                    <li>• Quarterly progress updates</li>
-                    <li>• Annual audit statements</li>
-                    <li>• Project-wise expenditure details</li>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div className="bg-orange-50 rounded-lg p-6">
+                  <h3 className="font-semibold text-gray-900 mb-4 text-lg">Regular Updates</h3>
+                  <ul className="text-gray-600 space-y-3">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      Monthly financial reports
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      Quarterly progress updates
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      Annual audit statements
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      Project-wise expenditure details
+                    </li>
                   </ul>
                 </div>
-                <div className="bg-orange-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Documentation Access</h3>
-                  <ul className="text-sm text-gray-600 space-y-2">
-                    <li>• Downloadable financial reports</li>
-                    <li>• Audit certificates</li>
-                    <li>• Legal compliance documents</li>
-                    <li>• Project completion reports</li>
+                <div className="bg-orange-50 rounded-lg p-6">
+                  <h3 className="font-semibold text-gray-900 mb-4 text-lg">Documentation Access</h3>
+                  <ul className="text-gray-600 space-y-3">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      Downloadable financial reports
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      Audit certificates
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      Legal compliance documents
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      Project completion reports
+                    </li>
                   </ul>
                 </div>
-              </div>
-              <div className="flex justify-center gap-4 mt-8">
-                <button className="flex items-center gap-2 px-4 py-2 bg-orange-50 
-                                 text-primary rounded-lg hover:bg-orange-100 transition-colors">
-                  <Download className="h-5 w-5" />
-                  Download Reports
-                </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-orange-50 
-                                 text-primary rounded-lg hover:bg-orange-100 transition-colors">
-                  <Play className="h-5 w-5" />
-                  Watch Our Journey
-                </button>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Trust Badges */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {['ISO 9001:2015 Certified', 'GuideStar Transparency Seal', 
-              '12A & 80G Registered', 'FCRA Compliant'].map((badge) => (
-              <div key={badge} 
-                   className="flex flex-col items-center p-3 sm:p-4 
-                            hover:bg-orange-50 rounded-xl transition-colors">
-                <Award className="h-8 w-8 sm:h-12 sm:w-12 text-primary mb-2 sm:mb-3" />
-                <span className="text-xs sm:text-sm font-medium text-gray-600 text-center">
-                  {badge}
-                </span>
-              </div>
-            ))}
           </div>
         </div>
 
@@ -254,10 +355,10 @@ function Transparency({ isPreview = false }) {
         <div className="bg-gradient-to-r from-primary to-orange-600 rounded-2xl 
                       shadow-2xl p-8 text-center text-white mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-            100% Transparent Operations
+            {highlightNote.title}
           </h2>
           <p className="text-base sm:text-xl">
-            We maintain 100% transparency. Every rupee you contribute helps rebuild our Andhra.
+            {highlightNote.description}
           </p>
         </div>
       </div>
