@@ -125,9 +125,9 @@ function Hero({ setCurrentView }) {
                 loading={index === 0 ? "eager" : "lazy"}
                 className="w-full h-full object-cover"
               />
-              {/* Updated gradient overlay with left and right fades */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-black" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/50" />
+              {/* Updated gradient overlay with lighter fade effects */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
             </div>
           ))}
         </div>
