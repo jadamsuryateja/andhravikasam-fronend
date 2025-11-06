@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Orange Scrollbar with Black Background */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;  /* Changed to dark background */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff9933;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  border: 2px solid #1a1a1a;  /* Added border to create spacing effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff8000;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ff9933 #1a1a1a;  /* Updated track color */
+}
+
+/* Add these utility classes after your Tailwind imports */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
