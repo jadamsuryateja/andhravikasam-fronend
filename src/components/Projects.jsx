@@ -59,8 +59,67 @@ function Projects() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="pt-24 pb-12 bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header Skeleton */}
+          <div className="text-center mb-12 space-y-4">
+            <div className="h-8 w-64 bg-gray-200 rounded-lg animate-pulse mx-auto"></div>
+            <div className="h-4 w-96 bg-gray-200 rounded-lg animate-pulse mx-auto"></div>
+          </div>
+
+          {/* Filter Skeleton */}
+          <div className="flex justify-center mb-8">
+            <div className="flex gap-2">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="w-24 h-10 bg-gray-200 rounded-md animate-pulse"></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Projects Grid Skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
+            {[...Array(8)].map((_, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+                <div className="relative w-full h-0 pb-[75%] sm:pb-[66.67%] bg-gray-200 animate-pulse">
+                  {/* Status badge skeleton */}
+                  <div className="absolute top-2 right-2 w-24 h-6 bg-gray-300 rounded-full"></div>
+                  {/* Date badge skeleton */}
+                  <div className="absolute top-2 left-2 w-20 h-6 bg-gray-300 rounded-md"></div>
+                  
+                  {/* Content skeleton */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 bg-gradient-to-t from-gray-100 to-transparent">
+                    {/* Title skeleton */}
+                    <div className="h-6 w-3/4 bg-gray-300 rounded mb-2"></div>
+                    {/* Description skeleton */}
+                    <div className="h-4 w-full bg-gray-300 rounded mb-2"></div>
+                    <div className="h-4 w-2/3 bg-gray-300 rounded mb-4"></div>
+                    
+                    {/* Location and sponsor skeleton */}
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                        <div className="h-4 w-1/2 bg-gray-300 rounded"></div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                        <div className="h-4 w-2/3 bg-gray-300 rounded"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination Skeleton */}
+          <div className="mt-8 flex flex-col items-center justify-center space-y-4 pb-8">
+            <div className="w-48 h-10 bg-gray-200 rounded-lg animate-pulse"></div>
+            <div className="flex gap-4">
+              <div className="w-24 h-12 bg-gray-200 rounded-lg animate-pulse"></div>
+              <div className="w-24 h-12 bg-gray-200 rounded-lg animate-pulse"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
