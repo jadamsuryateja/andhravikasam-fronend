@@ -1,177 +1,17 @@
-import { ArrowRight, Heart, Eye, Gift, Users, AlertCircle, MapPin, CheckCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { 
+  Heart, 
+  Eye, 
+  Gift, 
+  Users, 
+  AlertCircle, 
+  MapPin, 
+  CheckCircle,
+  ArrowDown,
+  ArrowRight
+} from 'lucide-react';
 
-// Add these variants at the top of your file
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: "easeOut"
-    }
-  }
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
-};
-
-const cardVariants = {
-  hidden: { 
-    opacity: 0, 
-    y: 20 
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  }
-};
-
-const numberVariants = {
-  hidden: { scale: 0.5, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      duration: 0.8
-    }
-  }
-};
-
-const slideFromLeft = {
-  hidden: { x: -100, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      ease: "easeOut"
-    }
-  }
-};
-
-const slideFromRight = {
-  hidden: { x: 100, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      ease: "easeOut"
-    }
-  }
-};
-
-const progressBarVariant = {
-  hidden: { width: 0 },
-  visible: { 
-    width: "100%",
-    transition: {
-      duration: 1.5,
-      ease: "easeInOut"
-    }
-  }
-};
-
-const pulseVariant = {
-  initial: { scale: 1 },
-  animate: {
-    scale: [1, 1.2, 1],
-    opacity: [1, 0.8, 1],
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  }
-};
-
-const processItemVariant = {
-  hidden: { y: 50, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  }
-};
-
-const iconVariant = {
-  hidden: { scale: 0, rotate: -180 },
-  visible: {
-    scale: 1,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      stiffness: 200,
-      damping: 20
-    }
-  }
-};
-
-// Add this to your existing variants at the top
-const readyToChangeVariants = {
-  container: {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3
-      }
-    }
-  },
-  middleCard: {
-    hidden: { y: 100, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  },
-  leftCard: {
-    hidden: { x: -100, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  },
-  rightCard: {
-    hidden: { x: 100, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  }
-};
 
 function Hero({ setCurrentView }) {
   const slides = [
@@ -238,212 +78,137 @@ function Hero({ setCurrentView }) {
     navigate(`/${path}`);
   };
 
-  // Simulate live updates for impact stats (replace with actual API call)
-  useEffect(() => {
-    // This would be your API call to fetch latest stats
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('/api/impact-stats');
-        const data = await response.json();
-        setImpactStats(data);
-      } catch (error) {
-        console.error('Failed to fetch impact stats:', error);
-      }
-    };
-
-    // Initial fetch
-    fetchStats();
-
-    // Set up interval for live updates
-    const interval = setInterval(fetchStats, 30000); // 30 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Add this section in your Hero component
-  const ReadyToChange = () => {
-    return (
-      <motion.div
-        variants={readyToChangeVariants.container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="py-16 bg-gray-50"
-      >
-        <h2 className="text-4xl font-bold text-center mb-12">Ready to Create Change?</h2>
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <motion.div
-            variants={readyToChangeVariants.leftCard}
-            className="bg-white p-6 rounded-lg shadow-lg"
-          >
-            <h3 className="text-xl font-semibold mb-4">Volunteer</h3>
-            <p className="mb-4">Join our network of change-makers and make a difference in your community.</p>
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-full">Join Now</button>
-          </motion.div>
-
-          <motion.div
-            variants={readyToChangeVariants.middleCard}
-            className="bg-blue-600 text-white p-6 rounded-lg shadow-lg"
-          >
-            <h3 className="text-xl font-semibold mb-4">Report an Issue</h3>
-            <p className="mb-4">Help us identify and solve problems in your village.</p>
-            <button className="bg-white text-blue-600 px-6 py-2 rounded-full">Report Now</button>
-          </motion.div>
-
-          <motion.div
-            variants={readyToChangeVariants.rightCard}
-            className="bg-white p-6 rounded-lg shadow-lg"
-          >
-            <h3 className="text-xl font-semibold mb-4">Donate</h3>
-            <p className="mb-4">Support our initiatives with your contribution.</p>
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-full">Donate Now</button>
-          </motion.div>
-        </div>
-      </motion.div>
-    );
-  };
-
   return (
     <div className="flex flex-col">
-      {/* Hero Section with Image Slider */}
-      <div className="relative h-screen overflow-hidden bg-gray-900">
-        {/* Image Slider with enhanced gradient */}
+      {/* Hero Section */}
+      <div className="relative min-h-[600px] h-[100svh] overflow-hidden bg-gray-900">
+        {/* Image Slider */}
         <div className="absolute inset-0">
           {slides.map((slide, index) => (
             <div
               key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 
-                       ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+              className={`absolute inset-0 transition-all duration-1000 ease-in-out
+                       ${index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}
             >
               <img
                 src={slide.url}
                 alt={slide.alt}
+                loading={index === 0 ? "eager" : "lazy"}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
             </div>
           ))}
         </div>
 
-        {/* Hero Content - Text Animation Container */}
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 flex items-center justify-center px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-in-out transform
-              ${index === currentSlide ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'}`}
-          >
-            <div className="text-center max-w-3xl space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                {slide.title}
+        {/* Hero Content */}
+        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-center items-center h-full text-center">
+            <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold 
+                   text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
+                   tracking-tight leading-[1.1]">
+                {slides[currentSlide].title}
               </h1>
-              <p className="text-lg sm:text-xl lg:text-2xl text-white font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                {slide.text}
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90
+                   font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+                {slides[currentSlide].text}
               </p>
             </div>
+
+            {/* Button Group - Centered */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 mt-8 sm:mt-14 
+                            justify-center w-full max-w-xl mx-auto">
+              <button
+                onMouseEnter={() => setIsHovered('join')}
+                onMouseLeave={() => setIsHovered(null)}
+                onClick={() => handleNavigation('join')}
+                className="group relative inline-flex items-center justify-center
+                         px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto
+                         bg-gradient-to-r from-primary to-orange-500
+                         text-white font-semibold rounded-xl text-sm
+                         transition-all duration-200 ease-out hover:scale-[1.02]
+                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.3)]
+                         active:scale-[0.98]"
+              >
+                <Heart 
+                  className={`mr-2 h-4 w-4 transition-transform duration-300
+                          ${isHovered === 'join' ? 'scale-125' : ''}`}
+                />
+                Join as Volunteer
+              </button>
+              
+              <button
+                onMouseEnter={() => setIsHovered('projects')}
+                onMouseLeave={() => setIsHovered(null)}
+                onClick={() => handleNavigation('projects')}
+                className="group relative inline-flex items-center justify-center
+                         px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto
+                         bg-white text-primary font-semibold rounded-xl text-sm sm:text-base
+                         transition-all duration-300 transform hover:scale-[1.02]
+                         border-2 border-primary hover:bg-primary hover:text-white
+                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.2)]
+                         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              >
+                <Eye 
+                  className={`mr-2 h-4 w-4 transition-transform duration-300
+                          ${isHovered === 'projects' ? 'scale-125' : ''}`}
+                />
+                View Projects
+              </button>
+              
+              <button
+                onMouseEnter={() => setIsHovered('donate')}
+                onMouseLeave={() => setIsHovered(null)}
+                onClick={() => handleNavigation('donate')}
+                className="group relative inline-flex items-center justify-center
+                         px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto
+                         bg-gradient-to-r from-primary to-orange-500
+                         text-white font-semibold rounded-xl text-sm sm:text-base
+                         transition-all duration-200 ease-out hover:scale-[1.02]
+                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.3)]
+                         active:scale-[0.98]"
+              >
+                <Gift 
+                  className={`mr-2 h-4 w-4 transition-transform duration-300
+                          ${isHovered === 'donate' ? 'scale-125' : ''}`}
+                />
+                Donate ₹1 for Andhra
+              </button>
+            </div>
           </div>
-        ))}
 
-        {/* Fixed Button Container - Overlay on Hero */}
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-50 
-             bg-white/90 backdrop-blur-sm rounded-full shadow-lg
-             w-max max-w-[90%] mx-auto">
-          <div className="flex flex-row gap-2 sm:gap-4 justify-center items-center px-3 py-2 sm:px-4 sm:py-3">
-            <button
-              onMouseEnter={() => setIsHovered('join')}
-              onMouseLeave={() => setIsHovered(null)}
-              onClick={() => handleNavigation('join')}
-              className="inline-flex items-center 
-                px-3 sm:px-4 py-1.5 sm:py-2
-                text-xs sm:text-sm
-                bg-gradient-to-r from-primary to-orange-500 
-                text-white font-medium rounded-full 
-                transition transform hover:scale-105 
-                shadow-sm hover:shadow-md"
-            >
-              <Heart className={`mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 ${isHovered === 'join' ? 'scale-125' : ''}`} />
-              Join as Volunteer
-            </button>
-
-            <button
-              onMouseEnter={() => setIsHovered('projects')}
-              onMouseLeave={() => setIsHovered(null)}
-              onClick={() => handleNavigation('projects')}
-              className="inline-flex items-center 
-                px-3 sm:px-4 py-1.5 sm:py-2
-                text-xs sm:text-sm
-                bg-white text-primary font-medium 
-                rounded-full border border-primary 
-                transition transform hover:bg-primary hover:text-white 
-                shadow-sm hover:shadow-md"
-            >
-              <Eye className={`mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 ${isHovered === 'projects' ? 'scale-125' : ''}`} />
-              View Projects
-            </button>
-
-            <button
-              onMouseEnter={() => setIsHovered('donate')}
-              onMouseLeave={() => setIsHovered(null)}
-              onClick={() => handleNavigation('donate')}
-              className="inline-flex items-center 
-                px-3 sm:px-4 py-1.5 sm:py-2
-                text-xs sm:text-sm
-                bg-gradient-to-r from-primary to-orange-500 
-                text-white font-medium rounded-full 
-                transition transform hover:scale-105 
-                shadow-sm hover:shadow-md"
-            >
-              <Gift className={`mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 ${isHovered === 'donate' ? 'scale-125' : ''}`} />
-              Donate ₹1
-            </button>
+          {/* Scroll Indicator - Centered */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 
+                         animate-bounce hidden sm:block">
+            <ArrowDown className="h-5 w-5 text-white/80" />
           </div>
         </div>
       </div>
 
       {/* Digital-First Approach Section */}
-      <motion.section 
-        className="py-12 sm:py-16 md:py-20 bg-white"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-8 sm:mb-12 md:mb-16"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold mb-2 sm:mb-4 text-gray-900">
               How Andhra Vikasam Transforms Civic Engagement
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
               We're not just another NGO. We're a revolutionary platform that bridges the gap between India's digital-native youth and grassroots governance needs.
             </p>
-          </motion.div>
+          </div>
 
           <div className="space-y-8 sm:space-y-12">
             {/* Digital-First Approach - Image on left */}
             <div className="flex flex-col md:flex-row-reverse items-center gap-6 sm:gap-8">
-              <motion.div 
-                className="w-full md:w-1/2"
-                variants={slideFromRight}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              <div className="w-full md:w-1/2">
                 <img 
                   src="https://images.pexels.com/photos/5198239/pexels-photo-5198239.jpeg"
                   alt="Digital Approach" 
                   className="rounded-lg w-full h-[250px] sm:h-[300px] object-cover"
                 />
-              </motion.div>
-              <motion.div 
-                className="w-full md:w-1/2 mt-6 md:mt-0"
-                variants={slideFromLeft}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              </div>
+              <div className="w-full md:w-1/2 mt-6 md:mt-0">
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
                   <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
                     <span className="text-white text-sm">1</span>
@@ -485,31 +250,19 @@ function Hero({ setCurrentView }) {
                     See Transparency
                   </button>
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             {/* Radical Transparency - Image on right */}
             <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8">
-              <motion.div 
-                className="w-full md:w-1/2"
-                variants={slideFromLeft}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              <div className="w-full md:w-1/2">
                 <img 
                   src="https://images.pexels.com/photos/7567444/pexels-photo-7567444.jpeg"
                   alt="Radical Transparency" 
                   className="rounded-lg w-full h-[250px] sm:h-[300px] object-cover shadow-lg"
                 />
-              </motion.div>
-              <motion.div 
-                className="w-full md:w-1/2 mt-6 md:mt-0"
-                variants={slideFromRight}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              </div>
+              <div className="w-full md:w-1/2 mt-6 md:mt-0">
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
                   <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
                     <span className="text-white text-sm">2</span>
@@ -547,31 +300,19 @@ function Hero({ setCurrentView }) {
                     See Transparency
                   </button>
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             {/* Youth-Led Governance - Image on left */}
             <div className="flex flex-col md:flex-row-reverse items-center gap-6 sm:gap-8">
-              <motion.div 
-                className="w-full md:w-1/2"
-                variants={slideFromRight}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              <div className="w-full md:w-1/2">
                 <img 
                   src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846"
                   alt="Youth-Led Governance" 
                   className="rounded-lg w-full h-[250px] sm:h-[300px] object-cover"
                 />
-              </motion.div>
-              <motion.div 
-                className="w-full md:w-1/2 mt-6 md:mt-0"
-                variants={slideFromLeft}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              </div>
+              <div className="w-full md:w-1/2 mt-6 md:mt-0">
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
                   <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
                     <span className="text-white text-sm">3</span>
@@ -609,28 +350,16 @@ function Hero({ setCurrentView }) {
                     See Transparency
                   </button>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Impact Dashboard Section */}
-      <motion.section 
-        className="py-16 bg-gray-50"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-12"
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
+          <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-[#1E293B] mb-4">
               Live Impact Dashboard
             </h2>
@@ -638,549 +367,200 @@ function Hero({ setCurrentView }) {
               Real-time metrics showing the power of youth-led governance across India.
               Every number represents lives touched, problems solved, and communities transformed.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-4 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Villages Covered */}
-            <motion.div 
-              className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all"
-              variants={cardVariants}
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: 0.2 }
-              }}
-            >
-              <motion.div 
-                className="flex flex-col"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <motion.div 
-                  className="text-gray-400 text-sm mb-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
+            <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200">
+              <div className="flex flex-col">
+                <div className="text-gray-400 text-sm mb-2">
                   LIVE COUNT
-                </motion.div>
-                <div className="flex items-center gap-2 mb-1">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ 
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 10,
-                      delay: 0.4
-                    }}
-                  >
-                    <MapPin className="w-6 h-6 text-orange-500" />
-                  </motion.div>
-                  <motion.span 
-                    className="text-4xl font-bold text-orange-500"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ 
-                      duration: 0.8,
-                      delay: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
-                    {impactStats.villages.toLocaleString()}
-                  </motion.span>
                 </div>
-                <motion.div 
-                  className="text-gray-700 font-medium"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                >
+                <div className="flex items-center gap-2 mb-1">
+                  <MapPin className="w-6 h-6 text-orange-500" />
+                  <span className="text-4xl font-bold text-orange-500">
+                    {impactStats.villages.toLocaleString()}
+                  </span>
+                </div>
+                <div className="text-gray-700 font-medium">
                   Villages Covered
-                </motion.div>
-                <motion.div 
-                  className="text-gray-500 text-sm mt-1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                >
-                  Across 175 constituencies in India
-                </motion.div>
-                <motion.div 
-                  className="w-full h-1 bg-orange-500 rounded mt-4"
-                  variants={progressBarVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                />
-              </motion.div>
-            </motion.div>
+                </div>
+                <div className="text-gray-500 text-sm mt-1">
+                  Across Andhra Pradesh
+                </div>
+                <div className="w-full h-1 bg-orange-500 rounded mt-4" />
+              </div>
+            </div>
 
             {/* Problems Solved */}
-            <motion.div 
-              className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all"
-              variants={cardVariants}
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: 0.2 }
-              }}
-            >
-              <motion.div 
-                className="flex flex-col"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <motion.div 
-                  className="text-gray-400 text-sm mb-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
+            <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200">
+              <div className="flex flex-col">
+                <div className="text-gray-400 text-sm mb-2">
                   LIVE COUNT
-                </motion.div>
-                <div className="flex items-center gap-2 mb-1">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ 
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 10,
-                      delay: 0.4
-                    }}
-                  >
-                    <CheckCircle className="w-6 h-6 text-green-500" />
-                  </motion.div>
-                  <motion.span 
-                    className="text-4xl font-bold text-green-500"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ 
-                      duration: 0.8,
-                      delay: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
-                    {impactStats.problems.toLocaleString()}
-                  </motion.span>
                 </div>
-                <motion.div 
-                  className="text-gray-700 font-medium"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                >
+                <div className="flex items-center gap-2 mb-1">
+                  <CheckCircle className="w-6 h-6 text-green-500" />
+                  <span className="text-4xl font-bold text-green-500">
+                    {impactStats.problems.toLocaleString()}
+                  </span>
+                </div>
+                <div className="text-gray-700 font-medium">
                   Problems Solved
-                </motion.div>
-                <motion.div 
-                  className="text-gray-500 text-sm mt-1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                >
+                </div>
+                <div className="text-gray-500 text-sm mt-1">
                   Real issues, real solutions
-                </motion.div>
-                <motion.div 
-                  className="w-full h-1 bg-green-500 rounded mt-4"
-                  variants={progressBarVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                />
-              </motion.div>
-            </motion.div>
+                </div>
+                <div className="w-full h-1 bg-green-500 rounded mt-4" />
+              </div>
+            </div>
 
             {/* Funds Utilized */}
-            <motion.div 
-              className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all"
-              variants={cardVariants}
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: 0.2 }
-              }}
-            >
-              <motion.div 
-                className="flex flex-col"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <motion.div 
-                  className="text-gray-400 text-sm mb-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
+            <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200">
+              <div className="flex flex-col">
+                <div className="text-gray-400 text-sm mb-2">
                   LIVE COUNT
-                </motion.div>
-                <div className="flex items-center gap-2 mb-1">
-                  <motion.span 
-                    className="text-2xl font-bold text-yellow-500"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ 
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 10,
-                      delay: 0.4
-                    }}
-                  >
-                    ₹
-                  </motion.span>
-                  <motion.span 
-                    className="text-4xl font-bold text-yellow-500"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ 
-                      duration: 0.8,
-                      delay: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
-                    {impactStats.funds.toLocaleString()}Cr
-                  </motion.span>
                 </div>
-                <motion.div 
-                  className="text-gray-700 font-medium"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                >
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-2xl font-bold text-yellow-500">
+                    ₹
+                  </span>
+                  <span className="text-4xl font-bold text-yellow-500">
+                    {impactStats.funds.toLocaleString()}Cr
+                  </span>
+                </div>
+                <div className="text-gray-700 font-medium">
                   Funds Utilized
-                </motion.div>
-                <motion.div 
-                  className="text-gray-500 text-sm mt-1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                >
+                </div>
+                <div className="text-gray-500 text-sm mt-1">
                   100% transparent allocation
-                </motion.div>
-                <motion.div 
-                  className="w-full h-1 bg-yellow-500 rounded mt-4"
-                  variants={progressBarVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                />
-              </motion.div>
-            </motion.div>
+                </div>
+                <div className="w-full h-1 bg-yellow-500 rounded mt-4" />
+              </div>
+            </div>
 
             {/* Active Volunteers */}
-            <motion.div 
-              className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all"
-              variants={cardVariants}
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: 0.2 }
-              }}
-            >
-              <motion.div 
-                className="flex flex-col"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <motion.div 
-                  className="text-gray-400 text-sm mb-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
+            <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200">
+              <div className="flex flex-col">
+                <div className="text-gray-400 text-sm mb-2">
                   LIVE COUNT
-                </motion.div>
-                <div className="flex items-center gap-2 mb-1">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ 
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 10,
-                      delay: 0.4
-                    }}
-                  >
-                    <Users className="w-6 h-6 text-green-500" />
-                  </motion.div>
-                  <motion.span 
-                    className="text-4xl font-bold text-green-500"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ 
-                      duration: 0.8,
-                      delay: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
-                    {impactStats.volunteers.toLocaleString()}+
-                  </motion.span>
                 </div>
-                <motion.div 
-                  className="text-gray-700 font-medium"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                >
+                <div className="flex items-center gap-2 mb-1">
+                  <Users className="w-6 h-6 text-green-500" />
+                  <span className="text-4xl font-bold text-green-500">
+                    {impactStats.volunteers.toLocaleString()}
+                  </span>
+                </div>
+                <div className="text-gray-700 font-medium">
                   Active Volunteers
-                </motion.div>
-                <motion.div 
-                  className="text-gray-500 text-sm mt-1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                >
+                </div>
+                <div className="text-gray-500 text-sm mt-1">
                   Youth leaders making change
-                </motion.div>
-                <motion.div 
-                  className="w-full h-1 bg-green-500 rounded mt-4"
-                  variants={progressBarVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                />
-              </motion.div>
-            </motion.div>
-          </motion.div>
-
-          <motion.div 
-            className="mt-12 text-center"
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center justify-center gap-2 text-green-500 mb-6">
-              <motion.div 
-                className="w-2 h-2 rounded-full bg-green-500"
-                variants={pulseVariant}
-                initial="initial"
-                animate="animate"
-              />
-              <motion.span 
-                className="text-sm"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-              >
-                Live updates every 30 seconds
-              </motion.span>
-              <motion.svg 
-                className="w-4 h-4" 
-                viewBox="0 0 24 24" 
-                fill="currentColor"
-                animate={{ 
-                  rotate: 360,
-                  transition: {
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }
-                }}
-              >
-                <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z" />
-              </motion.svg>
+                </div>
+                <div className="w-full h-1 bg-green-500 rounded mt-4" />
+              </div>
             </div>
-          </motion.div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <div className="flex items-center justify-center gap-2 text-green-500 mb-6">
+              <div className="w-2 h-2 rounded-full bg-green-500" />
+              <span className="text-sm">
+                Updates from Admin Dashboard
+              </span>
+            </div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Our 4-Step Impact Process Section */}
-      <motion.section 
-        className="bg-white py-16"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
+      <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-12"
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-4">
               Our 4-Step Impact Process
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               From problem identification to solution implementation, every step is transparent and community-driven.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4">
             {/* Report */}
-            <motion.div 
-              className="flex flex-col items-center"
-              variants={processItemVariant}
-            >
-              <motion.div 
-                className="bg-white w-16 h-16 rounded-full border-2 border-red-500 flex items-center justify-center mb-4"
-                variants={iconVariant}
-              >
+            <div className="flex flex-col items-center">
+              <div className="bg-white w-16 h-16 rounded-full border-2 border-red-500 flex items-center justify-center mb-4">
                 <AlertCircle className="w-8 h-8 text-red-500" />
-              </motion.div>
-              <motion.div 
-                className="bg-red-500 w-8 h-8 rounded-full flex items-center justify-center mb-3"
-                whileHover={{ scale: 1.1 }}
-              >
+              </div>
+              <div className="bg-red-500 w-8 h-8 rounded-full flex items-center justify-center mb-3">
                 <span className="text-white font-bold">1</span>
-              </motion.div>
-              <motion.h3 
-                className="text-xl font-bold text-gray-800 mb-2"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">
                 Report
-              </motion.h3>
-              <motion.p 
-                className="text-center text-gray-600 text-sm"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+              </h3>
+              <p className="text-center text-gray-600 text-sm">
                 Citizens report problems through our platform   
-              </motion.p>
-            </motion.div>
+              </p>
+            </div>
 
             {/* Verify */}
-            <motion.div 
-              className="flex flex-col items-center"
-              variants={processItemVariant}
-            >
-              <motion.div 
-                className="bg-white w-16 h-16 rounded-full border-2 border-[#F59E0B] flex items-center justify-center mb-4"
-                variants={iconVariant}
-              >
+            <div className="flex flex-col items-center">
+              <div className="bg-white w-16 h-16 rounded-full border-2 border-[#F59E0B] flex items-center justify-center mb-4">
                 <Eye className="w-8 h-8 text-[#F59E0B]" />
-              </motion.div>
-              <motion.div 
-                className="bg-[#F59E0B] w-8 h-8 rounded-full flex items-center justify-center mb-3"
-                whileHover={{ scale: 1.1 }}
-              >
+              </div>
+              <div className="bg-[#F59E0B] w-8 h-8 rounded-full flex items-center justify-center mb-3">
                 <span className="text-white font-bold">2</span>
-              </motion.div>
-              <motion.h3 
-                className="text-xl font-bold text-gray-800 mb-2"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">
                 Verify
-              </motion.h3>
-              <motion.p 
-                className="text-center text-gray-600 text-sm"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+              </h3>
+              <p className="text-center text-gray-600 text-sm">
                 Local volunteers verify and document issues
-              </motion.p>
-            </motion.div>
+              </p>
+            </div>
 
             {/* Solve */}
-            <motion.div 
-              className="flex flex-col items-center"
-              variants={processItemVariant}
-            >
-              <motion.div 
-                className="bg-white w-16 h-16 rounded-full border-2 border-[#3B82F6] flex items-center justify-center mb-4"
-                variants={iconVariant}
-              >
+            <div className="flex flex-col items-center">
+              <div className="bg-white w-16 h-16 rounded-full border-2 border-[#3B82F6] flex items-center justify-center mb-4">
                 <Users className="w-8 h-8 text-[#3B82F6]" />
-              </motion.div>
-              <motion.div 
-                className="bg-[#3B82F6] w-8 h-8 rounded-full flex items-center justify-center mb-3"
-                whileHover={{ scale: 1.1 }}
-              >
+              </div>
+              <div className="bg-[#3B82F6] w-8 h-8 rounded-full flex items-center justify-center mb-3">
                 <span className="text-white font-bold">3</span>
-              </motion.div>
-              <motion.h3 
-                className="text-xl font-bold text-gray-800 mb-2"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">
                 Solve
-              </motion.h3>
-              <motion.p 
-                className="text-center text-gray-600 text-sm"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+              </h3>
+              <p className="text-center text-gray-600 text-sm">
                 Skilled teams implement sustainable solutions
-              </motion.p>
-            </motion.div>
+              </p>
+            </div>
 
             {/* Track */}
-            <motion.div 
-              className="flex flex-col items-center"
-              variants={processItemVariant}
-            >
-              <motion.div 
-                className="bg-white w-16 h-16 rounded-full border-2 border-[#10B981] flex items-center justify-center mb-4"
-                variants={iconVariant}
-              >
+            <div className="flex flex-col items-center">
+              <div className="bg-white w-16 h-16 rounded-full border-2 border-[#10B981] flex items-center justify-center mb-4">
                 <Gift className="w-8 h-8 text-[#10B981]" />
-              </motion.div>
-              <motion.div 
-                className="bg-[#10B981] w-8 h-8 rounded-full flex items-center justify-center mb-3"
-                whileHover={{ scale: 1.1 }}
-              >
+              </div>
+              <div className="bg-[#10B981] w-8 h-8 rounded-full flex items-center justify-center mb-3">
                 <span className="text-white font-bold">4</span>
-              </motion.div>
-              <motion.h3 
-                className="text-xl font-bold text-gray-800 mb-2"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">
                 Track
-              </motion.h3>
-              <motion.p 
-                className="text-center text-gray-600 text-sm"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+              </h3>
+              <p className="text-center text-gray-600 text-sm">
                 Community monitors progress and impact
-              </motion.p>
-            </motion.div>
-          </motion.div>
+              </p>
+            </div>
+          </div>
 
-          <motion.div 
-            className="mt-12 text-center"
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.button
+          <div className="mt-12 text-center">
+            <button
               onClick={() => handleNavigation('report')}
               className="inline-flex items-center px-6 py-3 bg-[#FF5A1F] text-white font-semibold rounded-lg"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               Start the Process
               <ArrowRight className="ml-2 h-5 w-5" />
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Time for Change Section - Updated with subtle white-orange gradient */}
       <section className="py-24 bg-gradient-to-br from-orange-100 via-white to-orange-50">
@@ -1234,18 +614,9 @@ function Hero({ setCurrentView }) {
             </p>
           </div>
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={readyToChangeVariants.container}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Report a Problem Card */}
-            <motion.div 
-              variants={readyToChangeVariants.leftCard}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-            >
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="aspect-w-16 aspect-h-9 relative">
                 <img 
                   src="https://images.pexels.com/photos/4792733/pexels-photo-4792733.jpeg" 
@@ -1271,13 +642,10 @@ function Hero({ setCurrentView }) {
                   <span>Report Now</span>
                 </button>
               </div>
-            </motion.div>
+            </div>
 
             {/* Join the Movement Card */}
-            <motion.div 
-              variants={readyToChangeVariants.middleCard}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-            >
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="aspect-w-16 aspect-h-9 relative">
                 <img 
                   src="https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg" 
@@ -1304,13 +672,10 @@ function Hero({ setCurrentView }) {
                   <span>Join as Volunteer</span>
                 </button>
               </div>
-            </motion.div>
+            </div>
 
             {/* Support Our Cause Card */}
-            <motion.div 
-              variants={readyToChangeVariants.rightCard}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-            >
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="aspect-w-16 aspect-h-9 relative">
                 <img 
                   src="https://images.pexels.com/photos/7238759/pexels-photo-7238759.jpeg" 
@@ -1336,8 +701,8 @@ function Hero({ setCurrentView }) {
                   <span>Donate Now</span>
                 </button>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
