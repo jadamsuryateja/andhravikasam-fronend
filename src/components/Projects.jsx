@@ -57,6 +57,116 @@ function Projects() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Create a new LoadingSkeleton component for cards
+  const ProjectsSkeleton = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
+      {[...Array(8)].map((_, index) => (
+        <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+          <div className="relative w-full h-0 pb-[75%] sm:pb-[66.67%] bg-gray-200 animate-pulse">
+            {/* Status badge skeleton */}
+            <div className="absolute top-2 right-2 w-24 h-6 bg-gray-300 rounded-full"></div>
+            {/* Date badge skeleton */}
+            <div className="absolute top-2 left-2 w-20 h-6 bg-gray-300 rounded-md"></div>
+            
+            {/* Content skeleton */}
+            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 bg-gradient-to-t from-gray-100 to-transparent">
+              {/* Title skeleton */}
+              <div className="h-6 w-3/4 bg-gray-300 rounded mb-2"></div>
+              {/* Description skeleton */}
+              <div className="h-4 w-full bg-gray-300 rounded mb-2"></div>
+              <div className="h-4 w-2/3 bg-gray-300 rounded mb-4"></div>
+              
+              {/* Location and sponsor skeleton */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                  <div className="h-4 w-1/2 bg-gray-300 rounded"></div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                  <div className="h-4 w-2/3 bg-gray-300 rounded"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // First, create a separate ProjectCards component
+  const ProjectCards = ({ projects, loading, getStatusIcon, getStatusColor }) => {
+    if (loading) {
+      return <ProjectsSkeleton />;
+    }
+
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
+        {projects.map((project) => (
+          <div key={project._id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-200 flex flex-col">
+            <div className="relative w-full h-0 pb-[75%] sm:pb-[66.67%]"> {/* Adjusted aspect ratio */}
+              <img
+                src={project.images?.[0] || 'default-project-image.jpg'}
+                alt={project.title}
+                className="absolute top-0 left-0 w-full h-full object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src = 'default-project-image.jpg';
+                  e.target.onerror = null;
+                }}
+              />
+              {/* Status badge */}
+              <div className={`absolute top-2 sm:top-3 right-2 sm:right-3 z-10 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium border ${getStatusColor(project.status)}`}>
+                <div className="flex items-center gap-1.5">
+                  {getStatusIcon(project.status)}
+                  {project.status}
+                </div>
+              </div>
+              
+              {/* Date badge */}
+              <div className="absolute top-2 sm:top-3 left-2 sm:left-3 z-10 bg-black/50 text-white px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm">
+                {new Date(project.createdAt).toLocaleDateString('en-IN', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                })}
+              </div>
+              
+              {/* Content overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/75 to-transparent 
+                opacity-70 transition-opacity duration-300 group-hover:opacity-90"
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5">
+                <h3 className="text-white font-semibold text-lg sm:text-xl leading-tight mb-2 sm:mb-3 
+                  drop-shadow-lg line-clamp-2"
+                >
+                  {project.title}
+                </h3>
+                <p className="text-gray-200 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-2">
+                  {project.description}
+                </p>
+                
+                <div className="space-y-1.5 sm:space-y-2">
+                  <div className="flex items-center text-gray-100 text-xs sm:text-sm">
+                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
+                    <span className="line-clamp-1">{project.village}, {project.mandal}</span>
+                  </div>
+
+                  {project.sponsor && (
+                    <div className="flex items-center text-gray-100 text-xs sm:text-sm">
+                      <User className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
+                      <span className="line-clamp-1">Sponsored by {project.sponsor}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="pt-24 pb-12 bg-gray-50 min-h-screen">
@@ -77,39 +187,7 @@ function Projects() {
           </div>
 
           {/* Projects Grid Skeleton */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
-            {[...Array(8)].map((_, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
-                <div className="relative w-full h-0 pb-[75%] sm:pb-[66.67%] bg-gray-200 animate-pulse">
-                  {/* Status badge skeleton */}
-                  <div className="absolute top-2 right-2 w-24 h-6 bg-gray-300 rounded-full"></div>
-                  {/* Date badge skeleton */}
-                  <div className="absolute top-2 left-2 w-20 h-6 bg-gray-300 rounded-md"></div>
-                  
-                  {/* Content skeleton */}
-                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 bg-gradient-to-t from-gray-100 to-transparent">
-                    {/* Title skeleton */}
-                    <div className="h-6 w-3/4 bg-gray-300 rounded mb-2"></div>
-                    {/* Description skeleton */}
-                    <div className="h-4 w-full bg-gray-300 rounded mb-2"></div>
-                    <div className="h-4 w-2/3 bg-gray-300 rounded mb-4"></div>
-                    
-                    {/* Location and sponsor skeleton */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                        <div className="h-4 w-1/2 bg-gray-300 rounded"></div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
-                        <div className="h-4 w-2/3 bg-gray-300 rounded"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ProjectsSkeleton />
 
           {/* Pagination Skeleton */}
           <div className="mt-8 flex flex-col items-center justify-center space-y-4 pb-8">
@@ -133,8 +211,9 @@ function Projects() {
   }
 
   return (
-    <div className="pt-24 pb-12 bg-gray-50 min-h-screen"> {/* Increased top padding */}
+    <div className="pt-24 pb-12 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Static Header */}
         <div className="text-center mb-12 space-y-4">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
             Community Projects
@@ -144,8 +223,8 @@ function Projects() {
           </p>
         </div>
 
-        {/* Filter Controls */}
-        <div className="flex justify-center mb-8 overflow-x-auto py-2"> {/* Added overflow handling */}
+        {/* Static Filter Controls */}
+        <div className="flex justify-center mb-8 overflow-x-auto py-2">
           <div className="inline-flex rounded-md shadow-sm">
             {['all', 'Pending', 'In Progress', 'Solved'].map((status) => (
               <button
@@ -170,72 +249,15 @@ function Projects() {
           </div>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
-          {currentProjects.map((project) => (
-            <div key={project._id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-200 flex flex-col">
-              <div className="relative w-full h-0 pb-[75%] sm:pb-[66.67%]"> {/* Adjusted aspect ratio */}
-                <img
-                  src={project.images?.[0] || 'default-project-image.jpg'}
-                  alt={project.title}
-                  className="absolute top-0 left-0 w-full h-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.target.src = 'default-project-image.jpg';
-                    e.target.onerror = null;
-                  }}
-                />
-                {/* Status badge */}
-                <div className={`absolute top-2 sm:top-3 right-2 sm:right-3 z-10 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium border ${getStatusColor(project.status)}`}>
-                  <div className="flex items-center gap-1.5">
-                    {getStatusIcon(project.status)}
-                    {project.status}
-                  </div>
-                </div>
-                
-                {/* Date badge */}
-                <div className="absolute top-2 sm:top-3 left-2 sm:left-3 z-10 bg-black/50 text-white px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm">
-                  {new Date(project.createdAt).toLocaleDateString('en-IN', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                  })}
-                </div>
-                
-                {/* Content overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/75 to-transparent 
-                  opacity-70 transition-opacity duration-300 group-hover:opacity-90"
-                />
-                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5">
-                  <h3 className="text-white font-semibold text-lg sm:text-xl leading-tight mb-2 sm:mb-3 
-                    drop-shadow-lg line-clamp-2"
-                  >
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-200 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-2">
-                    {project.description}
-                  </p>
-                  
-                  <div className="space-y-1.5 sm:space-y-2">
-                    <div className="flex items-center text-gray-100 text-xs sm:text-sm">
-                      <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
-                      <span className="line-clamp-1">{project.village}, {project.mandal}</span>
-                    </div>
+        {/* Dynamic Project Cards */}
+        <ProjectCards 
+          projects={currentProjects}
+          loading={loading}
+          getStatusIcon={getStatusIcon}
+          getStatusColor={getStatusColor}
+        />
 
-                    {project.sponsor && (
-                      <div className="flex items-center text-gray-100 text-xs sm:text-sm">
-                        <User className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
-                        <span className="line-clamp-1">Sponsored by {project.sponsor}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Pagination Controls */}
+        {/* Static Pagination Controls */}
         <div className="mt-8 flex flex-col items-center justify-center space-y-4 pb-8">
           {/* Projects count */}
           <div className="bg-white px-4 py-3 rounded-lg shadow-sm border border-gray-200">
