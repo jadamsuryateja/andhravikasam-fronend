@@ -674,7 +674,7 @@ function Hero({ setCurrentView }) {
         </div>
       </div>
 
-      {/* Add this section for buttons */}
+      {/* Replace the existing buttons section with this code */}
       <div className="absolute bottom-32 left-0 right-0 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6 z-20">
         <motion.button
           variants={buttonVariants}
@@ -682,7 +682,7 @@ function Hero({ setCurrentView }) {
           animate="visible"
           custom={0}
           onClick={handleJoinClick}
-          className="px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
+          className="px-6 py-3 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
         >
           Join as Volunteer
         </motion.button>
@@ -693,7 +693,7 @@ function Hero({ setCurrentView }) {
           animate="visible"
           custom={1}
           onClick={handleProjectsClick}
-          className="px-6 py-3 bg-white text-green-600 rounded-full font-semibold hover:bg-green-50 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
+          className="px-6 py-3 bg-white text-orange-500 rounded-full font-semibold hover:bg-orange-50 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto border border-orange-500"
         >
           View Projects
         </motion.button>
@@ -704,7 +704,7 @@ function Hero({ setCurrentView }) {
           animate="visible"
           custom={2}
           onClick={handleDonateClick}
-          className="px-6 py-3 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
+          className="px-6 py-3 bg-green-500 text-white rounded-full font-semibold hover:bg-green-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
         >
           Donate ₹1 for Andhra
         </motion.button>
