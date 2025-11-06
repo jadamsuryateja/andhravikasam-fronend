@@ -52,9 +52,9 @@ function Header() {
           >
             <span className="text-2xl">🌿</span>
             <h1 className={`text-xl font-bold transition-colors duration-300
-                         ${isScrolled || location.pathname !== '/'
-                           ? 'text-primary'
-                           : 'text-white'}`}>
+               ${isScrolled || location.pathname !== '/'
+                 ? 'text-orange-500'
+                 : 'text-white'}`}>
               Andhra Vikasam
             </h1>
           </div>
@@ -66,12 +66,12 @@ function Header() {
                 key={item.id}
                 onClick={() => handleNavigation(item.path)}
                 className={`px-3 py-2 text-sm font-medium rounded-lg 
-                         transition-all duration-300
-                         ${location.pathname === item.path
-                           ? 'bg-primary text-white'
-                           : isScrolled || location.pathname !== '/'
-                             ? 'text-gray-800 hover:text-primary'
-                             : 'text-white hover:text-white/80'}`}
+             transition-all duration-300
+             ${location.pathname === item.path
+               ? 'bg-orange-500 text-white'
+               : isScrolled || location.pathname !== '/'
+                 ? 'text-gray-800 hover:text-orange-500'
+                 : 'text-white hover:text-white/80'}`}
               >
                 {item.label}
               </button>
@@ -85,8 +85,8 @@ function Header() {
               className={`px-4 py-2 text-sm rounded-lg transition-all duration-300 
                    flex items-center gap-1.5 font-medium shadow hover:shadow-md
                    ${isScrolled || location.pathname !== '/'
-                     ? 'bg-orange-50 text-primary hover:bg-orange-100'
-                     : 'bg-primary text-white hover:bg-primary/90'}`}
+                     ? 'bg-orange-50 text-orange-500 hover:bg-orange-100'
+                     : 'bg-orange-500 text-white hover:bg-orange-500/90'}`}
             >
               <AlertCircle className="h-4 w-4" />
               Report Problem
@@ -107,10 +107,10 @@ function Header() {
             <Link
               to="/join"
               className={`px-4 py-2 text-sm font-medium rounded-lg
-                   transition-all duration-300 shadow hover:shadow-md
-                   ${isScrolled || location.pathname !== '/'
-                     ? 'bg-primary text-white hover:bg-primary/90'
-                     : 'bg-white text-primary hover:bg-white/90'}`}
+             transition-all duration-300 shadow hover:shadow-md
+             ${isScrolled || location.pathname !== '/'
+               ? 'bg-orange-500 text-white hover:bg-orange-600'
+               : 'bg-white text-orange-500 hover:bg-white/90'}`}
             >
               Join the Movement
             </Link>
@@ -134,9 +134,9 @@ function Header() {
       {/* Mobile Menu - Updated layout with better text visibility */}
       {mobileMenuOpen && (
         <nav className={`md:hidden border-t transition-all duration-300
-                       ${isScrolled || location.pathname !== '/'
-                         ? 'bg-white border-gray-100' 
-                         : 'bg-primary/95 border-white/10'}`}>
+               ${isScrolled || location.pathname !== '/'
+                 ? 'bg-white border-gray-100' 
+                 : 'bg-orange-500/95 border-white/10'}`}>
           <div className="px-4 py-2 space-y-2">
             {navItems.map(item => (
               <button
@@ -158,7 +158,7 @@ function Header() {
                 to="/report"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs 
-                         rounded-lg bg-white text-primary font-medium hover:bg-orange-50"
+                         rounded-lg bg-white text-orange-500 font-medium hover:bg-orange-50"
               >
                 <AlertCircle className="h-3.5 w-3.5" />
                 Report
