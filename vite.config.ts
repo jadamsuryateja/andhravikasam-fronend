@@ -9,5 +9,6 @@ export default defineConfig({
   define: {
     // Add this to make environment variables available
     'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL)
-  }
+  },
+  base: '/'
 });
