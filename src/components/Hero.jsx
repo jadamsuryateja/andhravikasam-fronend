@@ -83,68 +83,60 @@ function Hero({ setCurrentView }) {
           ))}
         </div>
 
-        {/* Hero Content - Improved text visibility */}
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col justify-center h-full max-w-3xl">
-            <div className="space-y-6">
-              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold 
-                   text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                {slides[currentSlide].title}
-              </h1>
-              <p className="text-xl sm:text-2xl lg:text-3xl text-white 
-                   font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                {slides[currentSlide].text}
-              </p>
-            </div>
+        {/* Hero Content - centered in the slider */}
+        <div className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl space-y-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold 
+                 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+              {slides[currentSlide].title}
+            </h1>
+            <p className="text-lg sm:text-xl lg:text-2xl text-white 
+                 font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+              {slides[currentSlide].text}
+            </p>
 
-            {/* Enhanced Button Group */}
-            <div className="flex flex-col sm:flex-row gap-5 mt-14">
+            {/* Centered Button Group */}
+            <div className="flex flex-col sm:flex-row gap-4 mt-6 justify-center">
               <button
                 onMouseEnter={() => setIsHovered('join')}
                 onMouseLeave={() => setIsHovered(null)}
-                onClick={() => handleNavigation('join')}  // Updated to use handleNavigation
-                className="group relative inline-flex items-center px-8 py-4 
-                         bg-gradient-to-r from-primary to-orange-500
-                         text-white font-semibold rounded-xl
-                         transition-all duration-300 transform hover:scale-105
-                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.3)]"
+                onClick={() => handleNavigation('join')}
+                className="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-primary to-orange-500
+                         text-white font-medium text-sm rounded-full transition transform
+                         hover:scale-105 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/30"
               >
                 <Heart 
-                  className={`mr-2 h-5 w-5 transition-transform duration-300
+                  className={`mr-2 h-4 w-4 transition-transform duration-300
                           ${isHovered === 'join' ? 'scale-125' : ''}`}
                 />
                 Join as Volunteer
               </button>
-              
+
               <button
                 onMouseEnter={() => setIsHovered('projects')}
                 onMouseLeave={() => setIsHovered(null)}
-                onClick={() => handleNavigation('projects')}  // Updated to use handleNavigation
-                className="group relative inline-flex items-center px-8 py-4
-                         bg-white text-primary font-semibold rounded-xl
-                         transition-all duration-300 transform hover:scale-105
-                         border-2 border-primary hover:bg-primary hover:text-white
-                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.2)]"
+                onClick={() => handleNavigation('projects')}
+                className="inline-flex items-center px-5 py-2.5 bg-white text-primary font-medium text-sm
+                         rounded-full border border-primary transition transform hover:bg-primary hover:text-white
+                         shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/10"
               >
                 <Eye 
-                  className={`mr-2 h-5 w-5 transition-transform duration-300
+                  className={`mr-2 h-4 w-4 transition-transform duration-300
                           ${isHovered === 'projects' ? 'scale-125' : ''}`}
                 />
                 View Projects
               </button>
-              
+
               <button
                 onMouseEnter={() => setIsHovered('donate')}
                 onMouseLeave={() => setIsHovered(null)}
-                onClick={() => handleNavigation('donate')}  // Updated to use handleNavigation
-                className="group relative inline-flex items-center px-8 py-4
-                         bg-gradient-to-r from-primary to-orange-500
-                         text-white font-semibold rounded-xl
-                         transition-all duration-300 transform hover:scale-105
-                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.3)]"
+                onClick={() => handleNavigation('donate')}
+                className="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-primary to-orange-500
+                         text-white font-medium text-sm rounded-full transition transform
+                         hover:scale-105 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/30"
               >
                 <Gift 
-                  className={`mr-2 h-5 w-5 transition-transform duration-300
+                  className={`mr-2 h-4 w-4 transition-transform duration-300
                           ${isHovered === 'donate' ? 'scale-125' : ''}`}
                 />
                 Donate ₹1 for Andhra
@@ -275,8 +267,8 @@ function Hero({ setCurrentView }) {
             </p>
             <button 
               onClick={() => handleNavigation('transparency')}
-              className="mt-6 px-6 py-3 bg-primary text-white font-semibold rounded-lg
-                       hover:bg-primary/90 transition-all duration-300 inline-flex items-center"
+              className="mt-6 inline-flex items-center px-5 py-2.5 bg-primary text-white font-semibold rounded-full
+                       hover:bg-primary/90 transition transform hover:scale-105 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/30"
             >
               View Detailed Analytics
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -304,24 +296,20 @@ function Hero({ setCurrentView }) {
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <button
                 onClick={() => handleNavigation('join')}
-                className="px-8 py-4 bg-primary text-white font-semibold rounded-xl
-                         hover:bg-orange-600 transition-all duration-300 transform 
-                         hover:scale-105 shadow-lg hover:shadow-xl
-                         flex items-center justify-center"
+                className="inline-flex items-center px-5 py-2.5 bg-primary text-white font-semibold rounded-full
+                         hover:bg-orange-600 transition transform hover:scale-105 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/30"
               >
                 Join Movement
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </button>
-              
+
               <button
                 onClick={() => handleNavigation('report')}
-                className="px-8 py-4 bg-white text-primary font-semibold rounded-xl
-                         hover:bg-orange-50 transition-all duration-300 transform 
-                         hover:scale-105 shadow-lg hover:shadow-xl border-2 
-                         border-primary flex items-center justify-center"
+                className="inline-flex items-center px-5 py-2.5 bg-white text-primary font-semibold rounded-full
+                         hover:bg-orange-50 transition transform hover:scale-105 shadow-sm hover:shadow-md border-2 border-primary focus:outline-none focus:ring-2 focus:ring-primary/10"
               >
                 Report Problem
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </div>
           </div>

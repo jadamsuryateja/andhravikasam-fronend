@@ -13,20 +13,20 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff9933;
+  background: #FFB366;
   border-radius: 5px;
   transition: background-color 0.3s ease;
   border: 2px solid #1a1a1a;  /* Added border to create spacing effect */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff8000;
+  background: #FF9F4D;
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #ff9933 #1a1a1a;  /* Updated track color */
+  scrollbar-color: #FFB366 #1a1a1a;  /* Updated track color */
 }
 
 /* Add these utility classes after your Tailwind imports */

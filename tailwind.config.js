@@ -8,9 +8,10 @@ module.exports = {
       },
       colors: {
         primary: {
-          DEFAULT: '#FF9933',
+          // Made the primary color lighter for a softer orange across the UI
+          DEFAULT: '#FFB366',
           dark: '#F87F22',
-          light: '#FFB366'
+          light: '#FFD39B'
         }
       },
     },

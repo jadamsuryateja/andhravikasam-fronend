@@ -592,7 +592,8 @@ export default AdminDashboard;
   }
 
   select option:checked {
-    background: linear-gradient(to right, #FF9933, #FFA500);
+    /* Use the lighter primary orange for consistency */
+    background: linear-gradient(to right, #FFB366, #FFC785);
     color: white;
   }
 
