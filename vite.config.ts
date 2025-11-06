@@ -1,18 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://andhravikasam-server.onrender.com',
-        changeOrigin: true,
-      },
-    },
-  },
+  define: {
+    // Add this to make environment variables available
+    'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL)
+  }
 });

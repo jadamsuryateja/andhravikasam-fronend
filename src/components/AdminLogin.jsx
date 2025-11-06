@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Lock, User, Eye, EyeOff } from 'lucide-react';
 
-const API_URL = 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
 
 function AdminLogin({ onLogin }) {
   const [formData, setFormData] = useState({
@@ -25,28 +25,29 @@ function AdminLogin({ onLogin }) {
     setError('');
 
     try {
+      console.log('Attempting login to:', `${API_URL}/admin/login`);
+      
       const response = await fetch(`${API_URL}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        credentials: 'include'
       });
 
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
 
       onLogin(data);
-
-      sessionStorage.setItem('adminToken', data.token);
-      sessionStorage.setItem('adminData', JSON.stringify(data.admin));
-
     } catch (err) {
-      setError(err.message || 'Login failed');
       console.error('Login error:', err);
+      setError(err.message || 'Network error - please try again');
     } finally {
       setLoading(false);
     }
