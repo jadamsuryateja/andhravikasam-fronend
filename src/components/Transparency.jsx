@@ -59,20 +59,64 @@ function Transparency({ isPreview = false }) {
     fetchStats();
   }, []);
 
-  // Update fetchStats to handle loading state
+  // Update the fetchStats function with better error handling and data validation
   const fetchStats = async () => {
     try {
       setIsLoading(true);
       const response = await fetch(`${API_URL}/stats`);
       const data = await response.json();
       
-      // Update all states with data from backend
-      setStats(data.stats);
-      setFinancialStats(data.financialStats);
-      setHighlightNote(data.highlightNote);
+      // Validate and set defaults for missing data
+      const validatedStats = {
+        transparencyScore: data?.stats?.transparencyScore || '0%',
+        utilizationRate: data?.stats?.utilizationRate || '0%',
+        trackingRate: data?.stats?.trackingRate || '0%',
+        auditFrequency: data?.stats?.auditFrequency || 'Not Set',
+        totalMembers: data?.stats?.totalMembers || 0,
+        fundsCollected: data?.stats?.fundsCollected || 0,
+        fundsUsed: data?.stats?.fundsUsed || 0,
+        balance: data?.stats?.balance || 0,
+      };
+
+      const validatedFinancialStats = {
+        totalIncome: data?.financialStats?.totalIncome || '0',
+        totalExpenses: data?.financialStats?.totalExpenses || '0',
+        reserves: data?.financialStats?.reserves || '0',
+        efficiencyRatio: data?.financialStats?.efficiencyRatio || '0%'
+      };
+
+      const validatedHighlightNote = {
+        title: data?.highlightNote?.title || '100% Transparent Operations',
+        description: data?.highlightNote?.description || 'We maintain 100% transparency. Every rupee you contribute helps rebuild our Andhra.'
+      };
+      
+      setStats(validatedStats);
+      setFinancialStats(validatedFinancialStats);
+      setHighlightNote(validatedHighlightNote);
       
     } catch (error) {
       console.error('Error fetching stats:', error);
+      // Set default values in case of error
+      setStats({
+        transparencyScore: '0%',
+        utilizationRate: '0%',
+        trackingRate: '0%',
+        auditFrequency: 'Not Set',
+        totalMembers: 0,
+        fundsCollected: 0,
+        fundsUsed: 0,
+        balance: 0,
+      });
+      setFinancialStats({
+        totalIncome: '0',
+        totalExpenses: '0',
+        reserves: '0',
+        efficiencyRatio: '0%'
+      });
+      setHighlightNote({
+        title: '100% Transparent Operations',
+        description: 'We maintain 100% transparency. Every rupee you contribute helps rebuild our Andhra.'
+      });
     } finally {
       setIsLoading(false);
     }
