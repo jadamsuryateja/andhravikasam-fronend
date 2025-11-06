@@ -25,6 +25,7 @@ function Header() {
     { id: 'join', label: 'Join', path: '/join' },
     { id: 'projects', label: 'Projects', path: '/projects' },
     { id: 'transparency', label: 'Transparency', path: '/transparency' },
+    { id: 'report', label: 'Report Problem', path: '/report' },
     { id: 'contact', label: 'Contact', path: '/contact' },
     ];
 
@@ -80,18 +81,6 @@ function Header() {
 
           {/* Update action buttons */}
           <div className="hidden md:flex items-center space-x-3">
-            <Link
-              to="/report"
-              className={`px-4 py-2 text-sm rounded-lg transition-all duration-300 
-                   flex items-center gap-1.5 font-medium shadow hover:shadow-md
-                   ${isScrolled || location.pathname !== '/'
-                     ? 'bg-orange-50 text-orange-500 hover:bg-orange-100'
-                     : 'bg-orange-500 text-white hover:bg-orange-500/90'}`}
-            >
-              <AlertCircle className="h-4 w-4" />
-              Report Problem
-            </Link>
-
             <Link
               to="/donate"
               className={`px-4 py-2 text-sm rounded-lg transition-all duration-300 

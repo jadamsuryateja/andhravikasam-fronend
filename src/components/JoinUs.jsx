@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { CheckCircle, UserPlus } from 'lucide-react';
+import { 
+  CheckCircle, UserPlus, Rocket, Heart, Target, Users2, Network,
+  User, UserCog, MapPin, Building, Briefcase, Phone, MessageSquare, 
+  FileSpreadsheet, MapPinned, Home
+} from 'lucide-react';
 
 const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbwsl8ePJIsBx7B_0GHzU8EC7UhK5DR2mcE5_QSHJywiFVqaWIZNYlYiGJRhekyQV4KEog/exec";
 
@@ -18,6 +22,13 @@ function JoinUs() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const [stats, setStats] = useState({
+    activeVolunteers: 0,
+    constituenciesCovered: 0,
+    problemsSolved: 0,
+    fundsUtilized: 0
+  });
 
   const roles = [
     'Volunteer',
@@ -99,25 +110,152 @@ function JoinUs() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-orange-50/50">
-      <div className="max-w-[1440px] mx-auto pt-24"> {/* Added top padding */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-6rem)]"> {/* Adjusted height */}
-          {/* Left Side - Form */}
-          <div className="px-6 sm:px-8 lg:px-12 py-12">
-            <div className="max-w-2xl mx-auto">
-              <div className="text-center mb-6"> {/* Reduced margin */}
-                <h1 className="text-4xl font-bold text-gray-900 mb-3">Join Andhra Vikasam</h1>
-                <p className="text-lg text-gray-700">
-                  Be part of the movement to build a better Andhra Pradesh
-                </p>
+      <div className="max-w-[1440px] mx-auto pt-8">
+        {/* Hero Section with Stats */}
+        <div className="text-center max-w-4xl mx-auto px-4 mb-8">
+          {/* Pre-heading text */}
+          <div className="inline-flex items-center justify-center gap-2 text-orange-500 font-medium mt-16 mb-6 bg-orange-50 px-4 py-2 rounded-full">
+            <Rocket className="w-4 h-4" />
+            <span>Join the Movement</span>
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <span className="text-[#1e2f4d] block">Transform Your</span>
+            <span className="text-[#ff6b2b] block">Passion into Impact</span>
+          </h1>
+
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+             Join our growing community of young changemakers across India who are solving real village 
+              problems through technology, transparency, and collective action. Your 
+              skills can create lasting change.
+          </p>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg p-6 shadow-lg">
+              <Heart className="w-8 h-8 text-rose-500 mx-auto mb-3" />
+              <h3 className="text-3xl font-bold text-gray-900">{stats.activeVolunteers}</h3>
+              <p className="text-gray-600 text-sm">Active Volunteers</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-lg">
+              <Target className="w-8 h-8 text-blue-500 mx-auto mb-3" />
+              <h3 className="text-3xl font-bold text-gray-900">{stats.constituenciesCovered}</h3>
+              <p className="text-gray-600 text-sm">Constituencies Covered</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-lg">
+              <UserPlus className="w-8 h-8 text-green-500 mx-auto mb-3" />
+              <h3 className="text-3xl font-bold text-gray-900">{stats.problemsSolved}</h3>
+              <p className="text-gray-600 text-sm">Problems Solved</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-lg">
+              <Rocket className="w-8 h-8 text-orange-500 mx-auto mb-3" />
+              <h3 className="text-3xl font-bold text-gray-900">₹{stats.fundsUtilized}L</h3>
+              <p className="text-gray-600 text-sm">Funds Utilized</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Two Column Layout for Instructions and Form */}
+        <div className="max-w-7xl mx-auto px-4 pb-12">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Instructions Card */}
+            <div className="bg-white rounded-2xl shadow-xl p-6">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">How to Fill the Form</h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 mt-1">
+                    <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
+                      <span className="text-primary font-semibold">1</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Personal Details</h4>
+                    <p className="text-gray-600">Enter your full name and select the role you're interested in.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 mt-1">
+                    <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
+                      <span className="text-primary font-semibold">2</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Location Information</h4>
+                    <p className="text-gray-600">Provide your district, mandal, and village details accurately.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 mt-1">
+                    <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
+                      <span className="text-primary font-semibold">3</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Professional Background</h4>
+                    <p className="text-gray-600">Tell us about your college or current profession.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 mt-1">
+                    <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
+                      <span className="text-primary font-semibold">4</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Contact Details</h4>
+                    <p className="text-gray-600">Share your contact number for communication.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 mt-1">
+                    <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
+                      <span className="text-primary font-semibold">5</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Motivation</h4>
+                    <p className="text-gray-600">Explain why you want to join Andhra Vikasam and your vision for change.</p>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-xl p-6"> {/* Reduced padding */}
-                <form onSubmit={handleSubmit} className="space-y-4"> {/* Reduced spacing */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> {/* Two columns for form fields */}
+              {/* Additional Notes */}
+              <div className="mt-8 p-4 bg-orange-50 rounded-lg">
+                <h4 className="font-semibold text-gray-900 mb-2">Important Notes:</h4>
+                <ul className="list-disc list-inside space-y-2 text-gray-600">
+                  <li>All fields marked with * are mandatory</li>
+                  <li>Ensure your contact number is active</li>
+                  <li>Be honest and clear in your motivation</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Form Card - Existing Form */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+              <div className="px-6 sm:px-8 py-8">
+                {/* Form Header */}
+                <div className="text-center mb-6">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-3">Join Andhra Vikasam</h2>
+                  <p className="text-lg text-gray-700">
+                    Be part of the movement to build a better Andhra Pradesh
+                  </p>
+                </div>
+
+                {/* Form Content */}
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Name and Role */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Full Name *
+                        <div className="flex items-center gap-2">
+                          <User className="w-4 h-4 text-primary" />
+                          Full Name *
+                        </div>
                       </label>
                       <input
                         type="text"
@@ -133,7 +271,10 @@ function JoinUs() {
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Role *
+                        <div className="flex items-center gap-2">
+                          <UserCog className="w-4 h-4 text-primary" />
+                          Role *
+                        </div>
                       </label>
                       <select
                         name="role"
@@ -154,7 +295,10 @@ function JoinUs() {
                     {/* District and Mandal */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        District *
+                        <div className="flex items-center gap-2">
+                          <Building className="w-4 h-4 text-primary" />
+                          District *
+                        </div>
                       </label>
                       <input
                         type="text"
@@ -170,7 +314,10 @@ function JoinUs() {
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Mandal *
+                        <div className="flex items-center gap-2">
+                          <MapPinned className="w-4 h-4 text-primary" />
+                          Mandal *
+                        </div>
                       </label>
                       <input
                         type="text"
@@ -188,7 +335,10 @@ function JoinUs() {
                     {/* Village and College/Profession */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Village *
+                        <div className="flex items-center gap-2">
+                          <Home className="w-4 h-4 text-primary" />
+                          Village *
+                        </div>
                       </label>
                       <input
                         type="text"
@@ -204,7 +354,10 @@ function JoinUs() {
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        College/Profession *
+                        <div className="flex items-center gap-2">
+                          <Briefcase className="w-4 h-4 text-primary" />
+                          College/Profession *
+                        </div>
                       </label>
                       <input
                         type="text"
@@ -220,52 +373,61 @@ function JoinUs() {
                     </div>
                   </div>
 
-                  {/* Contact and Motivation */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                      Contact Number *
-                    </label>
-                    <input
-                      type="tel"
-                      name="contact"
-                      value={formData.contact}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg 
-                               focus:ring-2 focus:ring-primary focus:border-transparent 
-                               transition-all"
-                      placeholder="Enter your contact number"
-                    />
+                  {/* Contact and Motivation fields */}
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">
+                        <div className="flex items-center gap-2">
+                          <Phone className="w-4 h-4 text-primary" />
+                          Contact Number *
+                        </div>
+                      </label>
+                      <input
+                        type="tel"
+                        name="contact"
+                        value={formData.contact}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg 
+                                 focus:ring-2 focus:ring-primary focus:border-transparent 
+                                 transition-all"
+                        placeholder="Enter your contact number"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="w-4 h-4 text-primary" />
+                          Why do you want to join Andhra Vikasam? *
+                        </div>
+                      </label>
+                      <textarea
+                        name="motivation"
+                        value={formData.motivation}
+                        onChange={handleChange}
+                        required
+                        rows="3"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg 
+                                 focus:ring-2 focus:ring-primary focus:border-transparent 
+                                 transition-all"
+                        placeholder="Share your motivation..."
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                      Why do you want to join Andhra Vikasam? *
-                    </label>
-                    <textarea
-                      name="motivation"
-                      value={formData.motivation}
-                      onChange={handleChange}
-                      required
-                      rows="3"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg 
-                               focus:ring-2 focus:ring-primary focus:border-transparent 
-                               transition-all"
-                      placeholder="Share your motivation..."
-                    />
-                  </div>
-
-                  {/* Error and Submit Button */}
+                  {/* Error Message */}
                   {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded-lg">
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
                       {error}
                     </div>
                   )}
 
+                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-primary text-white font-bold rounded-lg 
+                    className="w-full py-4 bg-primary text-white font-bold rounded-lg 
                              hover:bg-orange-600 transition-all duration-300 
                              disabled:bg-gray-400 disabled:cursor-not-allowed 
                              shadow-lg hover:shadow-xl"
@@ -273,47 +435,6 @@ function JoinUs() {
                     {loading ? 'Submitting...' : 'Join Andhra Vikasam'}
                   </button>
                 </form>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Side - Visual Content */}
-          <div className="hidden lg:flex flex-col items-center justify-center 
-                        bg-gradient-to-br from-primary/10 to-orange-100 p-8">
-            <div className="text-center max-w-2xl w-full"> {/* Increased width */}
-              <div className="relative mb-6"> {/* Reduced margin */}
-                <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl"></div>
-                <UserPlus className="h-24 w-24 text-primary relative z-10 mx-auto" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Join Our Mission
-              </h2>
-              <div className="grid grid-cols-3 gap-4"> {/* Changed to grid layout */}
-                {/* Mission Cards */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    💪 Empower
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Work directly with villages
-                  </p>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    🤝 Connect
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Build youth networks
-                  </p>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    🎯 Impact
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Create real solutions
-                  </p>
-                </div>
               </div>
             </div>
           </div>
