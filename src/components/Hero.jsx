@@ -11,6 +11,7 @@ import {
   ArrowDown,
   ArrowRight
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 
 function Hero({ setCurrentView }) {
@@ -70,6 +71,34 @@ function Hero({ setCurrentView }) {
     return () => clearInterval(timer);
   }, []);
 
+  // Animation variants for buttons
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (custom) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: custom * 0.2,
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    })
+  };
+
+  // Handler functions for buttons
+  const handleJoinClick = () => {
+    navigate('/join');
+  };
+
+  const handleProjectsClick = () => {
+    navigate('/projects');
+  };
+
+  const handleDonateClick = () => {
+    // Add your donation handling logic here
+    window.open('https://your-donation-link.com', '_blank');
+  };
+
   // Helper function for navigation
   const handleNavigation = (path) => {
     if (setCurrentView) {
@@ -114,67 +143,6 @@ function Hero({ setCurrentView }) {
                    font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
                 {slides[currentSlide].text}
               </p>
-            </div>
-
-            {/* Button Group - Centered */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 mt-8 sm:mt-14 
-                            justify-center w-full max-w-xl mx-auto">
-              <button
-                onMouseEnter={() => setIsHovered('join')}
-                onMouseLeave={() => setIsHovered(null)}
-                onClick={() => handleNavigation('join')}
-                className="group relative inline-flex items-center justify-center
-                         px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto
-                         bg-gradient-to-r from-primary to-orange-500
-                         text-white font-semibold rounded-xl text-sm
-                         transition-all duration-200 ease-out hover:scale-[1.02]
-                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.3)]
-                         active:scale-[0.98]"
-              >
-                <Heart 
-                  className={`mr-2 h-4 w-4 transition-transform duration-300
-                          ${isHovered === 'join' ? 'scale-125' : ''}`}
-                />
-                Join as Volunteer
-              </button>
-              
-              <button
-                onMouseEnter={() => setIsHovered('projects')}
-                onMouseLeave={() => setIsHovered(null)}
-                onClick={() => handleNavigation('projects')}
-                className="group relative inline-flex items-center justify-center
-                         px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto
-                         bg-white text-primary font-semibold rounded-xl text-sm sm:text-base
-                         transition-all duration-300 transform hover:scale-[1.02]
-                         border-2 border-primary hover:bg-primary hover:text-white
-                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.2)]
-                         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              >
-                <Eye 
-                  className={`mr-2 h-4 w-4 transition-transform duration-300
-                          ${isHovered === 'projects' ? 'scale-125' : ''}`}
-                />
-                View Projects
-              </button>
-              
-              <button
-                onMouseEnter={() => setIsHovered('donate')}
-                onMouseLeave={() => setIsHovered(null)}
-                onClick={() => handleNavigation('donate')}
-                className="group relative inline-flex items-center justify-center
-                         px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto
-                         bg-gradient-to-r from-primary to-orange-500
-                         text-white font-semibold rounded-xl text-sm sm:text-base
-                         transition-all duration-200 ease-out hover:scale-[1.02]
-                         hover:shadow-[0_8px_30px_rgb(255,153,51,0.3)]
-                         active:scale-[0.98]"
-              >
-                <Gift 
-                  className={`mr-2 h-4 w-4 transition-transform duration-300
-                          ${isHovered === 'donate' ? 'scale-125' : ''}`}
-                />
-                Donate ₹1 for Andhra
-              </button>
             </div>
           </div>
 
@@ -704,6 +672,42 @@ function Hero({ setCurrentView }) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Add this section for buttons */}
+      <div className="absolute bottom-32 left-0 right-0 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6 z-20">
+        <motion.button
+          variants={buttonVariants}
+          initial="hidden"
+          animate="visible"
+          custom={0}
+          onClick={handleJoinClick}
+          className="px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
+        >
+          Join as Volunteer
+        </motion.button>
+
+        <motion.button
+          variants={buttonVariants}
+          initial="hidden"
+          animate="visible"
+          custom={1}
+          onClick={handleProjectsClick}
+          className="px-6 py-3 bg-white text-green-600 rounded-full font-semibold hover:bg-green-50 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
+        >
+          View Projects
+        </motion.button>
+
+        <motion.button
+          variants={buttonVariants}
+          initial="hidden"
+          animate="visible"
+          custom={2}
+          onClick={handleDonateClick}
+          className="px-6 py-3 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-lg hover:shadow-xl w-64 sm:w-auto"
+        >
+          Donate ₹1 for Andhra
+        </motion.button>
       </div>
     </div>
   );
