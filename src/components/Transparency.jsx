@@ -1,115 +1,58 @@
-import { useState, useEffect } from 'react';
-import { 
-  Users, TrendingUp, CheckCircle, DollarSign, Download, Play,
-  BarChart3, ArrowUpRight, FileText, Shield, Award
-} from 'lucide-react';
-import { Line } from 'react-chartjs-2';
+import { Users, TrendingUp, CheckCircle, DollarSign, Download, 
+         BarChart3, ArrowUpRight, FileText, Shield, Award } from 'lucide-react';
 import Footer from './Footer';
 
-const API_URL = 'https://andhravikasam-server.onrender.com/api';
-
 function Transparency({ isPreview = false }) {
-  // Initialize all stats with zero values
-  const [stats, setStats] = useState({
-    transparencyScore: '0%',
-    utilizationRate: '0%',
-    trackingRate: '0%',
-    auditFrequency: 'Not Set',
-    totalMembers: 0,
-    fundsCollected: 0,
-    fundsUsed: 0,
-    balance: 0,
-  });
+  // Static data instead of fetching from API
+  const stats = {
+    transparencyScore: '95%',
+    utilizationRate: '90%',
+    trackingRate: '100%',
+    auditFrequency: 'Quarterly',
+  };
 
-  // Update the metrics array
   const metrics = [
     {
       title: 'Financial Transparency Score',
-      value: stats.transparencyScore || '0%',
+      value: '95%',
       description: 'Based on independent audit ratings',
       icon: Award,
       color: '#22C55E',
     },
     {
       title: 'Fund Utilization Efficiency',
-      value: stats.utilizationRate || '0%',
+      value: '90%',
       description: 'Direct project impact vs operational costs',
       icon: TrendingUp,
       color: '#FF6B3D',
     },
     {
       title: 'Real-time Tracking',
-      value: stats.trackingRate || '0%',
+      value: '100%',
       description: 'All transactions logged and verified',
       icon: Shield,
       color: '#3B82F6',
     },
     {
       title: 'Third-party Audits',
-      value: stats.auditFrequency || 'Not Set',
+      value: 'Quarterly',
       description: 'Independent financial verification',
       icon: FileText,
       color: '#EAB308',
     }
   ];
 
-  // Add loading state
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  // Update fetchStats to handle loading state
-  const fetchStats = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${API_URL}/stats`);
-      const data = await response.json();
-      
-      // Update all states with data from backend
-      setStats(data.stats);
-      setFinancialStats(data.financialStats);
-      setHighlightNote(data.highlightNote);
-      
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-    } finally {
-      setIsLoading(false);
-    }
+  const financialStats = {
+    totalIncome: '1,50,000',
+    totalExpenses: '1,20,000',
+    reserves: '30,000',
+    efficiencyRatio: '90%'
   };
 
-  // Update the metrics rendering to handle zero values
-  const renderMetricValue = (value) => {
-    if (isLoading) {
-      return (
-        <div className="h-8 bg-gray-200 animate-pulse rounded-md"></div>
-      );
-    }
-    // Show zero values in a consistent format
-    if (value === '0%' || value === 'Not Available') {
-      return <span className="text-gray-400">{value}</span>;
-    }
-    return value;
-  };
-
-  const [transactions, setTransactions] = useState([]);
-  const [activeTab, setActiveTab] = useState('monthly');
-
-  // New state variables for financial stats and timeframe
-  const [financialStats, setFinancialStats] = useState({
-    totalIncome: '0',
-    totalExpenses: '0',
-    reserves: '0',
-    efficiencyRatio: '0%'
-  });
-  const [timeframe, setTimeframe] = useState('monthly');
-
-  // Update the highlight note content to be configurable
-  const [highlightNote, setHighlightNote] = useState({
+  const highlightNote = {
     title: '100% Transparent Operations',
     description: 'We maintain 100% transparency. Every rupee you contribute helps rebuild our Andhra.'
-  });
+  };
 
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-white to-orange-50">
