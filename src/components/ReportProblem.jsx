@@ -287,34 +287,34 @@ function ReportProblem() {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-gray-900">Select Problem Category</h2>
-            {/* Update grid to show 4 cards per row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+            {/* Update grid to show cards side by side with responsive behavior */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {problemCategories.map(category => {
                 const Icon = category.icon;
                 return (
                   <button
                     key={category.id}
                     onClick={() => setSelectedProblem(category)}
-                    className={`p-3 sm:p-4 rounded-xl text-center transition-all hover:shadow-lg w-full
-                              ${selectedProblem?.id === category.id
-                                ? 'bg-primary text-white ring-2 ring-primary ring-offset-2'
-                                : 'bg-white text-gray-700 hover:bg-orange-50 border border-gray-200'
-                              }`}
+                    className={`p-4 rounded-xl text-center transition-all hover:shadow-lg
+                                ${selectedProblem?.id === category.id
+                                  ? 'bg-primary text-white ring-2 ring-primary ring-offset-2'
+                                  : 'bg-white text-gray-700 hover:bg-orange-50 border border-gray-200'
+                                }`}
                   >
                     <div className="flex flex-col items-center">
-                      <div className={`p-2 sm:p-3 rounded-lg mb-2 sm:mb-3 ${
+                      <div className={`p-3 rounded-lg mb-3 ${
                         selectedProblem?.id === category.id
                           ? 'bg-white/20'
                           : 'bg-orange-100'
                       }`}>
-                        <Icon className={`h-6 w-6 sm:h-8 sm:w-8 ${
+                        <Icon className={`h-6 w-6 ${
                           selectedProblem?.id === category.id
                             ? 'text-white'
                             : 'text-primary'
                         }`} />
                       </div>
-                      <h3 className="font-semibold text-base sm:text-lg mb-1 sm:mb-2">{category.title}</h3>
-                      <p className={`text-xs sm:text-sm ${
+                      <h3 className="font-semibold text-base mb-1">{category.title}</h3>
+                      <p className={`text-xs ${
                           selectedProblem?.id === category.id
                             ? 'text-white/90'
                             : 'text-gray-600'
