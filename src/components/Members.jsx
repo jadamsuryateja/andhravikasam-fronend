@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Loader2, CheckCircle, XCircle, Users } from 'lucide-react';
 
-const API_URL = 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Update the main container
 function Members({ admin }) {

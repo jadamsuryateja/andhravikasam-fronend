@@ -8,7 +8,7 @@ import Members from './Members';
 import Reports from './Reports';
 import ValueUpdater from './ValueUpdater';
 
-const API_URL = 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function AdminDashboard({ admin, onLogout }) {
   const navigate = useNavigate();

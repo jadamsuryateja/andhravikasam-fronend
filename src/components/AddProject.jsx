@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { X, Upload, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function AddProject({ admin, onProjectAdded, onClose }) {
   const [formData, setFormData] = useState({

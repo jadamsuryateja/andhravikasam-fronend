@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { Line } from 'react-chartjs-2';
 
-const API_URL = 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Transparency({ isPreview = false }) {
   // Initialize all stats with zero values

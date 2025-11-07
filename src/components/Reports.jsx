@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Search, Filter, MapPin, X, Trash2, ImageOff, MapPinned, User } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Update the main container
 function Reports() {

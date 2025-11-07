@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import '../styles/ValueUpdater.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function ValueUpdater({ admin }) {
   const [heroStats, setHeroStats] = useState({

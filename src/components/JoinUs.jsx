@@ -5,8 +5,8 @@ import {
   FileSpreadsheet, MapPinned, Home
 } from 'lucide-react';
 
-const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbwsl8ePJIsBx7B_0GHzU8EC7UhK5DR2mcE5_QSHJywiFVqaWIZNYlYiGJRhekyQV4KEog/exec";
-const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
+const GOOGLE_SHEETS_API = import.meta.env.VITE_GOOGLE_SHEETS_API;
 
 function JoinUs() {
   const [formData, setFormData] = useState({

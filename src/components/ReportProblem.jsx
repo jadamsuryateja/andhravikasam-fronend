@@ -5,8 +5,7 @@ import {
   ArrowRight, Check, AlertCircle 
 } from 'lucide-react';
 
-const API_URL = 'https://andhravikasam-server.onrender.com/api';
-
+const API_URL = import.meta.env.VITE_API_URL;
 function ReportProblem() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedProblem, setSelectedProblem] = useState(null);
