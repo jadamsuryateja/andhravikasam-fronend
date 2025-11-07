@@ -136,15 +136,15 @@ function Hero({ setCurrentView }) {
         <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-center items-center h-full text-center">
             {/* Fixed height container for animated content */}
-            <div className="space-y-6 sm:space-y-8 max-w-3xl mx-auto min-h-[400px] flex flex-col">
+            <div className="space-y-6 sm:space-y-8 max-w-4xl mx-auto min-h-[400px] flex flex-col">
               {/* Text animation container */}
               <div className="flex-grow">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold 
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold 
                      text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
-                     tracking-tight leading-[1.1] mb-2 sm:mb-4 px-4 sm:px-6">
+                     tracking-tight leading-[1.1] mb-4 sm:mb-6 px-4 sm:px-6">
                   {slides[currentSlide].title}
                 </h1>
-                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90
+                <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white/90
                      font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]
                      px-4 sm:px-6 mb-8 sm:mb-12">
                   {slides[currentSlide].text}
