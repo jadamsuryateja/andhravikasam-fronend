@@ -40,7 +40,7 @@ function Header() {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300
+    <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300
                      ${location.pathname === '/donate'
                        ? 'bg-black/20 backdrop-blur-md py-3 lg:py-4'
                        : isScrolled || location.pathname !== '/'
@@ -138,65 +138,43 @@ function Header() {
 
       {/* Mobile Menu - Full screen overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-white">
-          <div className="flex flex-col h-full overflow-y-auto">
-            <div className="flex items-center justify-between px-4 py-4 border-b">
-              {/* Mobile menu logo - Increased size */}
-              <div className="flex items-center space-x-2">
-                <img 
-                  src="/assets/images/favicon.png" 
-                  alt="Andhra Vikasam Logo" 
-                  className="w-10 h-10"
-                />
-                <span className="text-lg font-bold text-orange-500">
-                  Andhra Vikasam
-                </span>
-              </div>
+        <div className="lg:hidden fixed inset-x-0 top-16 bg-white shadow-lg">
+          <nav className="flex flex-col max-h-[calc(100vh-4rem)] overflow-y-auto">
+            {navItems.map(item => (
               <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 rounded-lg text-gray-600"
+                key={item.id}
+                onClick={() => handleNavigation(item.path)}
+                className={`w-full text-left px-4 py-3 text-base font-medium border-b border-gray-100
+                  ${location.pathname === item.path
+                    ? 'bg-orange-50 text-orange-600'
+                    : 'text-gray-900 hover:bg-gray-50'}`}
               >
-                <X className="h-6 w-6" />
+                {item.label}
               </button>
-            </div>
+            ))}
+            
+            {/* Add mobile action buttons */}
+            <div className="flex flex-col gap-2 p-4">
+              <Link
+                to="/donate"
+                className="w-full py-2.5 px-4 text-sm font-medium rounded-lg 
+                           bg-green-50 text-green-600 hover:bg-green-100
+                           flex items-center justify-center gap-2"
+              >
+                <Wallet2 className="h-4 w-4" />
+                Donate
+              </Link>
 
-            <nav className="flex-1 px-4 py-6 space-y-2">
-              {navItems.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavigation(item.path)}
-                  className={`w-full text-left px-4 py-3 rounded-lg text-base font-medium
-                    ${location.pathname === item.path
-                      ? 'bg-orange-50 text-orange-600'
-                      : 'text-gray-900 hover:bg-gray-50'}`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </nav>
-
-            <div className="p-4 border-t">
-              <div className="grid grid-cols-2 gap-3">
-                <Link
-                  to="/donate"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 px-4 py-3 text-sm
-                    rounded-lg bg-green-50 text-green-600 font-medium hover:bg-green-100"
-                >
-                  <Wallet2 className="h-4 w-4" />
-                  Donate
-                </Link>
-                <Link
-                  to="/join"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center px-4 py-3 text-sm font-medium
-                    rounded-lg bg-orange-500 text-white hover:bg-orange-600"
-                >
-                  Join Now
-                </Link>
-              </div>
+              <Link
+                to="/join"
+                className="w-full py-2.5 px-4 text-sm font-medium rounded-lg
+                           bg-orange-500 text-white hover:bg-orange-600
+                           flex items-center justify-center"
+              >
+                Join Now
+              </Link>
             </div>
-          </div>
+          </nav>
         </div>
       )}
     </header>
