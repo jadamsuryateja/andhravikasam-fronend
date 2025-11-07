@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';  // Add useEffect import
 import { 
   CheckCircle, UserPlus, Rocket, Heart, Target, Users2, Network,
   User, UserCog, MapPin, Building, Briefcase, Phone, MessageSquare, 
@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 
 const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbwsl8ePJIsBx7B_0GHzU8EC7UhK5DR2mcE5_QSHJywiFVqaWIZNYlYiGJRhekyQV4KEog/exec";
+const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
 
 function JoinUs() {
   const [formData, setFormData] = useState({
@@ -80,6 +81,29 @@ function JoinUs() {
       setLoading(false);
     }
   };
+
+  // Add useEffect to fetch stats when component mounts
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${API_URL}/stats-join`);
+        if (!response.ok) throw new Error('Failed to fetch stats');
+        const data = await response.json();
+        
+        setStats({
+          activeVolunteers: Number(data.activeVolunteers) || 0,
+          constituenciesCovered: Number(data.constituenciesCovered) || 0,
+          problemsSolved: Number(data.problemsSolved) || 0,
+          fundsUtilized: Number(data.fundsUtilized) || 0
+        });
+      } catch (error) {
+        console.error('Error fetching join stats:', error);
+        // Optionally set an error state here
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   if (submitted) {
     return (

@@ -1,0 +1,28 @@
+.stats-input {
+  @apply w-full px-3 sm:px-4 py-2 border-2 rounded-lg
+         focus:ring-2 focus:ring-orange-500/20 
+         focus:border-orange-500 transition-colors
+         text-sm sm:text-base;
+}
+
+.stats-input:focus {
+  @apply ring-2 ring-orange-500/20 border-orange-500;
+}
+
+.update-button {
+  @apply w-full mt-6 sm:mt-8 py-2 sm:py-3 px-4 
+         rounded-lg text-sm sm:text-base font-medium
+         text-white bg-orange-500 transition-colors
+         hover:bg-orange-600 disabled:bg-gray-400;
+}
+
+/* Add responsive padding for containers */
+@media (max-width: 640px) {
+  .stats-input {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .update-button {
+    padding: 0.5rem 0.75rem;
+  }
+}

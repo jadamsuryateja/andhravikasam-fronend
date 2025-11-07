@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
-import { LogOut, Users, FolderOpen, MapPin, Clock, CheckCircle, AlertCircle, Loader2, Menu, FileText } from 'lucide-react';
+import { LogOut, Users, FolderOpen, MapPin, Clock, CheckCircle, AlertCircle, Loader2, Menu, FileText, BarChart2 } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import AddProject from './AddProject';
 import Members from './Members';
 import Reports from './Reports';
+import ValueUpdater from './ValueUpdater';
 
 const API_URL = 'https://andhravikasam-server.onrender.com/api';
 
@@ -294,7 +295,8 @@ function AdminDashboard({ admin, onLogout }) {
               {[
                 { id: 'projects', icon: FolderOpen, label: 'Projects' },
                 { id: 'members', icon: Users, label: 'Members' },
-                { id: 'reports', icon: FileText, label: 'Reports' }
+                { id: 'reports', icon: FileText, label: 'Reports' },
+                { id: 'statistics', icon: BarChart2, label: 'Statistics' } // Add this new item
               ].map(item => (
                 <button
                   key={item.id}
@@ -660,6 +662,10 @@ function AdminDashboard({ admin, onLogout }) {
           ) : activeTab === 'reports' ? (
             <div className="pt-4">
               <Reports />
+            </div>
+          ) : activeTab === 'statistics' ? (
+            <div className="pt-4">
+              <ValueUpdater admin={admin} />
             </div>
           ) : (
             <div className="pt-4">

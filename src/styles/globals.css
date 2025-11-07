@@ -15,4 +15,29 @@
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
   }
+  .rounded-logo {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  .text-andhra-gradient {
+    background: linear-gradient(to right, #FF6B3D, #FF8C4C);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.stats-input {
+  @apply w-full px-4 py-2 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 
+         focus:border-orange-500 transition-colors bg-white
+         border-gray-300 hover:border-orange-500;
+}
+
+.stats-input.error {
+  @apply border-red-300;
+}
+
+.update-button {
+  @apply w-full mt-8 py-3 px-4 rounded-lg font-medium text-white transition-colors
+         bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400;
 }

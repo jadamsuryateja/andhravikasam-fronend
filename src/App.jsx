@@ -14,6 +14,7 @@ import AdminDashboard from './components/AdminDashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './components/ScrollToTop';
+import Donate from './components/Donate';
 
 function App() {
   const [adminToken, setAdminToken] = useState(() => 
@@ -111,6 +112,13 @@ function App() {
               <>
                 <Header />
                 <ReportProblem />
+                <Footer />
+              </>
+            } />
+            <Route path="/donate" element={
+              <>
+                <Header />
+                <Donate />
                 <Footer />
               </>
             } />

@@ -41,21 +41,29 @@ function Header() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300
-                     ${isScrolled || location.pathname !== '/'
-                       ? 'bg-white shadow-md py-2 lg:py-3'
-                       : 'bg-transparent py-3 lg:py-4'}`}>
+                     ${location.pathname === '/donate'
+                       ? 'bg-black/20 backdrop-blur-md py-3 lg:py-4'
+                       : isScrolled || location.pathname !== '/'
+                         ? 'bg-white shadow-md py-2 lg:py-3'
+                         : 'bg-transparent py-3 lg:py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Logo - Responsive sizing */}
+          {/* Logo - Responsive */}
           <div 
             onClick={() => handleNavigation('/')}
             className="flex items-center space-x-2 cursor-pointer flex-shrink-0"
           >
-            <span className="text-xl sm:text-2xl">🌿</span>
+            <img 
+              src="/assets/images/favicon.png" 
+              alt="Andhra Vikasam Logo" 
+              className="w-10 h-10 sm:w-12 sm:h-12"
+            />
             <h1 className={`text-lg sm:text-xl font-bold transition-colors duration-300
-               ${isScrolled || location.pathname !== '/'
-                 ? 'text-orange-500'
-                 : 'text-white'}`}>
+               ${location.pathname === '/donate'
+                 ? 'text-white'
+                 : isScrolled || location.pathname !== '/'
+                   ? 'text-orange-500'
+                   : 'text-white'}`}>
               Andhra Vikasam
             </h1>
           </div>
@@ -70,9 +78,11 @@ function Header() {
                 transition-all duration-300 whitespace-nowrap
                 ${location.pathname === item.path
                   ? 'bg-orange-500 text-white'
-                  : isScrolled || location.pathname !== '/'
-                    ? 'text-gray-800 hover:text-orange-500'
-                    : 'text-white hover:text-white/80'}`}
+                  : location.pathname === '/donate'
+                    ? 'text-white hover:text-white/80'
+                    : isScrolled || location.pathname !== '/'
+                      ? 'text-gray-800 hover:text-orange-500'
+                      : 'text-white hover:text-white/80'}`}
               >
                 {item.label}
               </button>
@@ -112,9 +122,15 @@ function Header() {
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
-              <X className={`h-6 w-6 ${isScrolled || location.pathname !== '/' ? 'text-gray-900' : 'text-white'}`} />
+              <X className={`h-6 w-6 ${location.pathname === '/donate' ? 'text-white' : 'text-gray-900'}`} />
             ) : (
-              <Menu className={`h-6 w-6 ${isScrolled || location.pathname !== '/' ? 'text-gray-900' : 'text-white'}`} />
+              <Menu className={`h-6 w-6 ${
+                location.pathname === '/donate'
+                  ? 'text-white'
+                  : isScrolled || location.pathname !== '/'
+                    ? 'text-gray-900'
+                    : 'text-white'
+              }`} />
             )}
           </button>
         </div>
@@ -125,9 +141,16 @@ function Header() {
         <div className="lg:hidden fixed inset-0 z-50 bg-white">
           <div className="flex flex-col h-full overflow-y-auto">
             <div className="flex items-center justify-between px-4 py-4 border-b">
+              {/* Mobile menu logo - Increased size */}
               <div className="flex items-center space-x-2">
-                <span className="text-xl">🌿</span>
-                <span className="text-lg font-bold text-orange-500">Andhra Vikasam</span>
+                <img 
+                  src="/assets/images/favicon.png" 
+                  alt="Andhra Vikasam Logo" 
+                  className="w-10 h-10"
+                />
+                <span className="text-lg font-bold text-orange-500">
+                  Andhra Vikasam
+                </span>
               </div>
               <button
                 onClick={() => setMobileMenuOpen(false)}

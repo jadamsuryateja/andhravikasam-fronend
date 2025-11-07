@@ -13,7 +13,6 @@ function Transparency({ isPreview = false }) {
     transparencyScore: '0%',
     utilizationRate: '0%',
     trackingRate: '0%',
-    auditFrequency: 'Not Set',
     totalMembers: 0,
     fundsCollected: 0,
     fundsUsed: 0,
@@ -42,13 +41,6 @@ function Transparency({ isPreview = false }) {
       description: 'All transactions logged and verified',
       icon: Shield,
       color: '#3B82F6',
-    },
-    {
-      title: 'Third-party Audits',
-      value: stats.auditFrequency || 'Not Set',
-      description: 'Independent financial verification',
-      icon: FileText,
-      color: '#EAB308',
     }
   ];
 
@@ -59,41 +51,31 @@ function Transparency({ isPreview = false }) {
     fetchStats();
   }, []);
 
-  // Update the fetchStats function with better error handling and data validation
+  // Update the fetchStats function
   const fetchStats = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`${API_URL}/stats`);
+      const response = await fetch(`${API_URL}/stats-transparency`);
       const data = await response.json();
       
-      // Validate and set defaults for missing data
-      const validatedStats = {
-        transparencyScore: data?.stats?.transparencyScore || '0%',
-        utilizationRate: data?.stats?.utilizationRate || '0%',
-        trackingRate: data?.stats?.trackingRate || '0%',
-        auditFrequency: data?.stats?.auditFrequency || 'Not Set',
-        totalMembers: data?.stats?.totalMembers || 0,
-        fundsCollected: data?.stats?.fundsCollected || 0,
-        fundsUsed: data?.stats?.fundsUsed || 0,
-        balance: data?.stats?.balance || 0,
-      };
+      // Set the stats with validation
+      setStats({
+        transparencyScore: data.transparencyScore || '0%',
+        utilizationRate: data.utilizationRate || '0%',
+        trackingRate: data.trackingRate || '0%'
+      });
 
-      const validatedFinancialStats = {
-        totalIncome: data?.financialStats?.totalIncome || '0',
-        totalExpenses: data?.financialStats?.totalExpenses || '0',
-        reserves: data?.financialStats?.reserves || '0',
-        efficiencyRatio: data?.financialStats?.efficiencyRatio || '0%'
-      };
+      setFinancialStats({
+        totalIncome: data.financialStats?.totalIncome || '₹0 Cr',
+        totalExpenses: data.financialStats?.totalExpenses || '₹0 Cr',
+        reserves: data.financialStats?.reserves || '₹0 Cr',
+        efficiencyRatio: data.financialStats?.efficiencyRatio || '0%'
+      });
 
-      const validatedHighlightNote = {
-        title: data?.highlightNote?.title || '100% Transparent Operations',
-        description: data?.highlightNote?.description || 'We maintain 100% transparency. Every rupee you contribute helps rebuild our Andhra.'
-      };
-      
-      setStats(validatedStats);
-      setFinancialStats(validatedFinancialStats);
-      setHighlightNote(validatedHighlightNote);
-      
+      setHighlightNote({
+        title: data.highlightNote?.title || '100% Transparent Operations',
+        description: data.highlightNote?.description || 'We maintain 100% transparency. Every rupee you contribute helps rebuild our Andhra.'
+      });
     } catch (error) {
       console.error('Error fetching stats:', error);
       // Set default values in case of error
@@ -101,16 +83,15 @@ function Transparency({ isPreview = false }) {
         transparencyScore: '0%',
         utilizationRate: '0%',
         trackingRate: '0%',
-        auditFrequency: 'Not Set',
         totalMembers: 0,
         fundsCollected: 0,
         fundsUsed: 0,
         balance: 0,
       });
       setFinancialStats({
-        totalIncome: '0',
-        totalExpenses: '0',
-        reserves: '0',
+        totalIncome: '₹0 Cr',
+        totalExpenses: '₹0 Cr',
+        reserves: '₹0 Cr',
         efficiencyRatio: '0%'
       });
       setHighlightNote({
@@ -141,12 +122,12 @@ function Transparency({ isPreview = false }) {
 
   // New state variables for financial stats and timeframe
   const [financialStats, setFinancialStats] = useState({
-    totalIncome: '0',
-    totalExpenses: '0',
-    reserves: '0',
+    totalIncome: '₹0 Cr',
+    totalExpenses: '₹0 Cr',
+    reserves: '₹0 Cr',
     efficiencyRatio: '0%'
   });
-  const [timeframe, setTimeframe] = useState('monthly');
+  // const [timeframe, setTimeframe] = useState('monthly');
 
   // Update the highlight note content to be configurable
   const [highlightNote, setHighlightNote] = useState({
@@ -155,97 +136,31 @@ function Transparency({ isPreview = false }) {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 pt-36 pb-16">
-      {/* Changed pt-32 to pt-36 for a bit more top padding */}
+    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center items-center gap-2 mb-4">
-            <Shield className="h-6 w-6 text-[#FF6B3D]" />
-            <span className="text-[#FF6B3D] font-medium">100% Transparent Operations</span>
+        {/* Hero Section - Made more compact */}
+        <div className="text-center mb-8">
+          <div className="flex justify-center items-center gap-2 mb-3">
+            <Shield className="h-5 w-5 text-[#FF6B3D]" />
+            <span className="text-[#FF6B3D] font-medium text-sm sm:text-base">100% Transparent Operations</span>
           </div>
-          <h1 className="text-5xl font-bold text-[#2D4356] mb-6">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2D4356] mb-4">
             Transparency Engine
           </h1>
-          <p className="text-xl text-gray-500 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto leading-relaxed">
             "Transparency isn't just policy, it's our promise." Every rupee tracked, 
             every project documented, every impact measured in real-time.
           </p>
         </div>
 
-        {/* Metrics Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {metrics.map((metric, index) => (
-            <div key={index} 
-                 className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-lg transition-all">
-              <div className="flex items-start justify-between mb-6">
-                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                  <metric.icon 
-                    className="h-6 w-6" 
-                    style={{ color: metric.color }} 
-                  />
-                </div>
-              </div>
-              <div>
-                <h3 className="text-gray-600 text-sm font-medium mb-2">
-                  {metric.title}
-                </h3>
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-3xl font-bold" 
-                        style={{ color: metric.color }}>
-                    {metric.value}
-                  </span>
-                </div>
-                <p className="text-gray-500 text-sm">
-                  {metric.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Financial Overview Section */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-12">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">Financial Overview</h2>
-              <p className="text-gray-500">Comprehensive financial performance and fund utilization</p>
-            </div>
-            <div className="flex gap-2">
-              <button 
-                onClick={() => setTimeframe('monthly')}
-                className={`px-4 py-2 rounded-lg text-sm ${
-                  timeframe === 'monthly' 
-                    ? 'bg-primary text-white' 
-                    : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                Monthly
-              </button>
-              <button 
-                onClick={() => setTimeframe('quarterly')}
-                className={`px-4 py-2 rounded-lg text-sm ${
-                  timeframe === 'quarterly' 
-                    ? 'bg-primary text-white' 
-                    : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                Quarterly
-              </button>
-              <button 
-                onClick={() => setTimeframe('yearly')}
-                className={`px-4 py-2 rounded-lg text-sm ${
-                  timeframe === 'yearly' 
-                    ? 'bg-primary text-white' 
-                    : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                Year to Date
-              </button>
-            </div>
+        {/* Financial Stats - Moved up and made responsive */}
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 mb-8">
+          <div className="mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Financial Overview</h2>
+            <p className="text-sm text-gray-500">Comprehensive financial performance</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
                 title: 'Total Income',
@@ -272,71 +187,90 @@ function Transparency({ isPreview = false }) {
                 color: 'text-green-500'
               }
             ].map((item, index) => (
-              <div key={index} className="bg-gray-50 rounded-xl p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-gray-600 text-sm">{item.title}</span>
-                  <item.icon className={`h-5 w-5 ${item.color}`} />
+              <div key={index} className="bg-gray-50 rounded-xl p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <span className="text-gray-600 text-xs sm:text-sm">{item.title}</span>
+                  <item.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${item.color}`} />
                 </div>
                 <div className="flex items-baseline">
-                  <span className="text-2xl font-bold text-gray-900">
-                    {item.value === '0' ? '₹0' : `₹${item.value}`}
+                  <span className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
+                    {item.value}
                   </span>
                 </div>
               </div>
             ))}
           </div>
+        </div>
 
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Income vs Expenses Trend
-            </h3>
-            <button className="flex items-center gap-2 text-primary text-sm">
-              <Download className="h-4 w-4" />
-              Export Chart
-            </button>
+        {/* Metrics Grid - Adjusted layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          {metrics.map((metric, index) => (
+            <div key={index} 
+                 className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm hover:shadow-lg transition-all">
+              <div className="flex items-start justify-between mb-4">
+                <div className="bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-100">
+                  <metric.icon 
+                    className="h-5 w-5 sm:h-6 sm:w-6" 
+                    style={{ color: metric.color }} 
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-gray-600 text-sm font-medium mb-2">
+                  {metric.title}
+                </h3>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-2xl sm:text-3xl font-bold" 
+                        style={{ color: metric.color }}>
+                    {renderMetricValue(metric.value)}
+                  </span>
+                </div>
+                <p className="text-gray-500 text-xs sm:text-sm">
+                  {metric.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mission Statement Cards - Made more compact */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-all">
+            <div className="bg-orange-50 p-3 rounded-lg w-fit mb-4">
+              <CheckCircle className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Clear Accountability</h3>
+            <p className="text-gray-600">
+              Every donation and expense is meticulously tracked and publicly available. 
+              We believe in complete financial transparency.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-all">
+            <div className="bg-orange-50 p-3 rounded-lg w-fit mb-4">
+              <DollarSign className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Fund Utilization</h3>
+            <p className="text-gray-600">
+              90% of funds go directly to community projects. Only 10% is used for 
+              operational costs and sustainability.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-all">
+            <div className="bg-orange-50 p-3 rounded-lg w-fit mb-4">
+              <Users className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Community Trust</h3>
+            <p className="text-gray-600">
+              Built on trust and maintained through regular updates, audits, and 
+              community involvement in decision-making.
+            </p>
           </div>
         </div>
 
-        {/* Mission Statement Cards - Moved after Financial Overview */}
-        <div className="max-w-4xl mx-auto mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
-              <div className="bg-orange-50 p-3 rounded-lg w-fit mb-4">
-                <CheckCircle className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Clear Accountability</h3>
-              <p className="text-gray-600">
-                Every donation and expense is meticulously tracked and publicly available. 
-                We believe in complete financial transparency.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
-              <div className="bg-orange-50 p-3 rounded-lg w-fit mb-4">
-                <DollarSign className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Fund Utilization</h3>
-              <p className="text-gray-600">
-                90% of funds go directly to community projects. Only 10% is used for 
-                operational costs and sustainability.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
-              <div className="bg-orange-50 p-3 rounded-lg w-fit mb-4">
-                <Users className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Community Trust</h3>
-              <p className="text-gray-600">
-                Built on trust and maintained through regular updates, audits, and 
-                community involvement in decision-making.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Commitment to Transparency */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-12">
+        {/* Commitment Section - Made more responsive */}
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 mb-8">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
               Our Commitment to Transparency
@@ -395,13 +329,13 @@ function Transparency({ isPreview = false }) {
           </div>
         </div>
 
-        {/* Highlight Note */}
+        {/* Highlight Note - Adjusted padding and text size */}
         <div className="bg-gradient-to-r from-primary to-orange-600 rounded-2xl 
-                      shadow-2xl p-8 text-center text-white mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+                      shadow-2xl p-6 sm:p-8 text-center text-white">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3">
             {highlightNote.title}
           </h2>
-          <p className="text-base sm:text-xl">
+          <p className="text-sm sm:text-base lg:text-lg">
             {highlightNote.description}
           </p>
         </div>

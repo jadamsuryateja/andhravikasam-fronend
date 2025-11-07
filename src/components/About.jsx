@@ -1,6 +1,8 @@
 import { Users, ArrowRight, Building2, MapPin, Home, UserCheck, Search, Lightbulb, Users2, Settings, BarChart, Eye, Zap, Target, Flame, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
+
 function About() {
   // State for dynamic values with default values
   const [stats, setStats] = useState({
@@ -135,16 +137,26 @@ function About() {
     }
   ];
 
+  
   // Effect to fetch stats from API
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('/api/stats');
-        const data = await response.json();
-        setStats({
-          ...data,
+  const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch(`${API_URL}/stats-about`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+        console.log('Fetched stats:', data); // Debug log
+        setStats(prevStats => ({
+          ...prevStats,
+          constituencies: data.constituencies || 0,
+          volunteers: data.activeVolunteers || 0,
+          yearlyFund: data.impactGenerated || 0,
+          problemsSolved: data.problemsSolved || 0,
           isLoading: false
-        });
+        }));
       } catch (error) {
         console.error('Failed to fetch stats:', error);
         setStats(prevStats => ({
@@ -155,7 +167,6 @@ function About() {
     };
 
     fetchStats();
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-orange-50 pt-16">

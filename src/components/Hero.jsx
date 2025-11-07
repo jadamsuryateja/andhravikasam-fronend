@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Heart, 
@@ -12,6 +12,8 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 
 function Hero({ setCurrentView }) {
@@ -71,6 +73,34 @@ function Hero({ setCurrentView }) {
     return () => clearInterval(timer);
   }, []);
 
+  // Fetch impact stats from the server
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${API_URL}/stats`);
+        if (!response.ok) throw new Error('Failed to fetch stats');
+        const data = await response.json();
+        
+        setImpactStats({
+          villages: Number(data.villages) || 0,
+          problems: Number(data.problems) || 0, 
+          funds: Number(data.funds) || 0,
+          volunteers: Number(data.volunteers) || 0
+        });
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      }
+    };
+
+    // Initial fetch
+    fetchStats();
+    
+    // Poll for updates every 30 seconds
+    const interval = setInterval(fetchStats, 30000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
   // Animation variants for buttons
   const buttonVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -94,10 +124,9 @@ function Hero({ setCurrentView }) {
     navigate('/projects');
   };
 
-  const handleDonateClick = () => {
-    // Add your donation handling logic here
-    window.open('https://your-donation-link.com', '_blank');
-  };
+ const handleDonateClick = () => {
+  navigate('/donate'); // Use the navigate function to route to donate component
+};
 
   // Helper function for navigation
   const handleNavigation = (path) => {
