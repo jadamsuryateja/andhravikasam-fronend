@@ -1,7 +1,6 @@
 import { Users, ArrowRight, Building2, MapPin, Home, UserCheck, Search, Lightbulb, Users2, Settings, BarChart, Eye, Zap, Target, Flame, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
 
 function About() {
   // State for dynamic values with default values
@@ -31,35 +30,31 @@ function About() {
     return value.toLocaleString();
   };
 
+  // Update the structure array
   const structure = [
     {
       level: 'District Incharge',
       icon: Building2,
-      count: `${formatNumber(stats.districts)} Districts`,
       responsibility: 'Leads all constituency incharges within the district'
     },
     {
       level: 'Constituency Incharge',
       icon: MapPin,
-      count: `${formatNumber(stats.constituencies)} Constituencies`,
       responsibility: 'Manages all mandal and village incharges, uploads verified problems'
     },
     {
       level: 'Mandal Incharge',
       icon: Users,
-      count: `${formatNumber(stats.mandals)} Mandals`,
       responsibility: 'Supervises all village-level incharges and ensures weekly reports'
     },
     {
       level: 'Village Incharge',
       icon: Home,
-      count: `${formatNumber(stats.villages)} Villages`,
       responsibility: 'Collects all problems from volunteers and sends weekly updates'
     },
     {
       level: 'Volunteers',
       icon: UserCheck,
-      count: `${formatNumber(stats.volunteers)} Active Volunteers`,
       responsibility: 'Identify local problems, assist in projects, collect reports'
     }
   ];
@@ -139,7 +134,7 @@ function About() {
 
   
   // Effect to fetch stats from API
-  const API_URL = import.meta.env.VITE_API_URL || 'https://andhravikasam-server.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
   const fetchStats = async () => {
     try {
@@ -450,9 +445,6 @@ function About() {
                           <h3 className="text-lg font-bold text-white">
                             {item.level}
                           </h3>
-                          <span className="text-white/80 font-medium text-sm px-3 py-1 bg-white/10 rounded-full">
-                            {item.count}
-                          </span>
                         </div>
                         <p className="text-white/70 text-sm mb-3">
                           {item.responsibility}
