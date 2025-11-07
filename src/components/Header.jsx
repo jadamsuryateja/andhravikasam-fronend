@@ -137,46 +137,48 @@ function Header() {
       </div>
 
       {/* Mobile Menu - Full screen overlay */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-16 bg-white shadow-lg">
-          <nav className="flex flex-col max-h-[calc(100vh-4rem)] overflow-y-auto">
-            {navItems.map(item => (
-              <button
-                key={item.id}
-                onClick={() => handleNavigation(item.path)}
-                className={`w-full text-left px-4 py-3 text-base font-medium border-b border-gray-100
-                  ${location.pathname === item.path
-                    ? 'bg-orange-50 text-orange-600'
-                    : 'text-gray-900 hover:bg-gray-50'}`}
-              >
-                {item.label}
-              </button>
-            ))}
-            
-            {/* Add mobile action buttons */}
-            <div className="flex flex-col gap-2 p-4">
-              <Link
-                to="/donate"
-                className="w-full py-2.5 px-4 text-sm font-medium rounded-lg 
-                           bg-green-50 text-green-600 hover:bg-green-100
-                           flex items-center justify-center gap-2"
-              >
-                <Wallet2 className="h-4 w-4" />
-                Donate
-              </Link>
+      <div className={`lg:hidden fixed inset-x-0 top-16 bg-white shadow-lg transform transition-all duration-300 ease-in-out ${
+        mobileMenuOpen 
+          ? 'opacity-100 translate-y-0'
+          : 'opacity-0 -translate-y-2 pointer-events-none'
+      }`}>
+        <nav className="flex flex-col max-h-[calc(100vh-4rem)] overflow-y-auto">
+          {navItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => handleNavigation(item.path)}
+              className={`w-full text-left px-4 py-3 text-base font-medium border-b border-gray-100
+                ${location.pathname === item.path
+                  ? 'bg-orange-50 text-orange-600'
+                  : 'text-gray-900 hover:bg-gray-50'}`}
+            >
+              {item.label}
+            </button>
+          ))}
+          
+          {/* Add mobile action buttons */}
+          <div className="flex flex-col gap-2 p-4">
+            <button
+              onClick={() => handleNavigation('/donate')}
+              className="w-full py-2.5 px-4 text-sm font-medium rounded-lg 
+                         bg-green-50 text-green-600 hover:bg-green-100
+                         flex items-center justify-center gap-2"
+            >
+              <Wallet2 className="h-4 w-4" />
+              Donate
+            </button>
 
-              <Link
-                to="/join"
-                className="w-full py-2.5 px-4 text-sm font-medium rounded-lg
-                           bg-orange-500 text-white hover:bg-orange-600
-                           flex items-center justify-center"
-              >
-                Join Now
-              </Link>
-            </div>
-          </nav>
-        </div>
-      )}
+            <button
+              onClick={() => handleNavigation('/join')}
+              className="w-full py-2.5 px-4 text-sm font-medium rounded-lg
+                         bg-orange-500 text-white hover:bg-orange-600
+                         flex items-center justify-center"
+            >
+              Join Now
+            </button>
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }
