@@ -9,6 +9,8 @@ function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -17,12 +19,37 @@ function Contact() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+    setError('');
 
-    setTimeout(() => setSubmitted(false), 5000);
+    try {
+      const form = new FormData();
+      form.append('access_key', import.meta.env.VITE_WEB3FORMS_KEY);
+      form.append('name', formData.name);
+      form.append('email', formData.email);
+      form.append('message', formData.message);
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: form
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      setError('Failed to send message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -100,6 +127,12 @@ function Contact() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+                  {error}
+                </div>
+              )}
+              
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Your Name *
@@ -153,13 +186,16 @@ function Contact() {
 
               <button
                 type="submit"
-                className="w-full py-4 bg-primary text-white font-bold rounded-lg 
-                         hover:bg-orange-600 transition-all duration-300 
-                         shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 
-                         flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className={`w-full py-4 bg-primary text-white font-bold rounded-lg 
+                          transition-all duration-300 shadow-lg hover:shadow-xl 
+                          transform hover:-translate-y-0.5 flex items-center 
+                          justify-center gap-2 ${
+                            isSubmitting ? 'opacity-75 cursor-not-allowed' : 'hover:bg-orange-600'
+                          }`}
               >
                 <Send className="h-5 w-5" />
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
