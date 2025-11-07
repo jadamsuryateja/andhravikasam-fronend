@@ -691,43 +691,54 @@ function ReportProblem() {
 
   // Update the main container and card backgrounds
   return (
-    <div className="min-h-screen bg-orange-50/50 py-16 px-4 sm:py-24">
+    <div className="min-h-screen bg-orange-50/50 pt-32 pb-16 px-4 sm:pt-40 sm:pb-24">
       <div className="max-w-3xl mx-auto">
         {/* Card with softer background */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl">
           {/* Progress Steps */}
           <div className="p-4 sm:p-6 lg:p-8 border-b border-orange-100">
-            <div className="max-w-3xl mx-auto">
-              {/* Steps container - vertical on mobile, horizontal on larger screens */}
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+            <div className="max-w-4xl mx-auto">
+              {/* Steps container - always horizontal with responsive spacing */}
+              <div className="grid grid-cols-5 gap-2 sm:gap-4">
                 {steps.map((step, index) => (
                   <div
                     key={step.number}
-                    className="flex items-center sm:flex-col sm:items-center gap-4 sm:gap-2"
+                    className={`flex flex-col items-center text-center 
+                      ${index < steps.length - 1 ? 'relative' : ''}`}
                   >
+                    {/* Line connector */}
+                    {index < steps.length - 1 && (
+                      <div className={`hidden sm:block absolute top-5 left-1/2 w-full h-0.5 
+                        ${currentStep > step.number ? 'bg-primary' : 'bg-orange-200'}`}
+                      />
+                    )}
+                    
                     {/* Circle with number */}
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center 
-                               text-sm font-bold transition-all duration-300 flex-shrink-0
-                               ${currentStep >= step.number
-                                 ? 'bg-primary text-white shadow-md'
-                                 : 'bg-orange-50 text-gray-400 border-2 border-orange-200'
-                               }`}
+                      className={`w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center 
+                        justify-center text-sm font-bold transition-all duration-300 
+                        flex-shrink-0 relative z-10 ${
+                        currentStep >= step.number
+                          ? 'bg-primary text-white shadow-md'
+                          : 'bg-orange-50 text-gray-400 border-2 border-orange-200'
+                      }`}
                     >
                       {step.number}
                     </div>
 
                     {/* Title and subtitle */}
-                    <div className="sm:text-center">
+                    <div className="mt-2 w-full">
                       <div 
-                        className={`text-sm font-medium transition-colors duration-300
-                                 ${currentStep >= step.number ? 'text-gray-900' : 'text-gray-500'}`}
+                        className={`text-xs sm:text-sm font-medium transition-colors 
+                          duration-300 leading-tight ${
+                          currentStep >= step.number ? 'text-gray-900' : 'text-gray-500'
+                        }`}
                       >
                         {step.title}
                       </div>
                       <div 
-                        className={`text-xs transition-colors duration-300
-                                 ${currentStep >= step.number ? 'text-primary' : 'text-orange-300'}`}
+                        className={`text-[10px] sm:text-xs transition-colors duration-300 
+                          ${currentStep >= step.number ? 'text-primary' : 'text-orange-300'}`}
                       >
                         {step.subtitle}
                       </div>
